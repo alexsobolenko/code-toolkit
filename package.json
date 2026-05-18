@@ -21,10 +21,8 @@
         "Other",
         "Programming Languages"
     ],
-    "keywords": [
-    ],
-    "activationEvents": [
-    ],
+    "keywords": [],
+    "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
@@ -44,13 +42,16 @@
         "publish": "vsce publish"
     },
     "devDependencies": {
-        "@types/vscode": "^1.120.0",
+        "@commitlint/cli": "^20.5.3",
+        "@commitlint/config-conventional": "^20.5.3",
         "@types/mocha": "^10.0.10",
         "@types/node": "22.x",
-        "typescript-eslint": "^8.56.1",
-        "eslint": "^9.39.3",
-        "typescript": "^5.9.3",
+        "@types/vscode": "^1.120.0",
         "@vscode/test-cli": "^0.0.12",
-        "@vscode/test-electron": "^2.5.2"
+        "@vscode/test-electron": "^2.5.2",
+        "eslint": "^9.39.3",
+        "husky": "^9.1.7",
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.56.1"
     }
 }

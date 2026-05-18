@@ -4,8 +4,6 @@ Advanced Code Toolkit is a Visual Studio Code extension project focused on makin
 
 The project is intended to collect small, practical tools that reduce repetitive actions, improve the editing flow, and help developers stay focused on writing and maintaining code.
 
-The extension is currently in development. Its tools are expected to evolve over time, so this README intentionally describes the project goals rather than a fixed feature set.
-
 ## Project Goals
 
 - Provide lightweight utilities for common development tasks.
