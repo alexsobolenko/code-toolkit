@@ -1,0 +1,56 @@
+{
+    "name": "advanced-code-toolkit",
+    "displayName": "Advanced code toolkit",
+    "description": "A Visual Studio Code toolkit focused on simplifying everyday development workflows.",
+    "version": "0.1.0",
+    "license": "MIT",
+    "author": {
+        "name": "Alexey Sobolenko",
+        "email": "alexsobolenko@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/alexsobolenko/code-toolkit.git"
+    },
+    "icon": "assets/icon.png",
+    "publisher": "alexsobolenko",
+    "engines": {
+        "vscode": "^1.103.0"
+    },
+    "categories": [
+        "Other",
+        "Programming Languages"
+    ],
+    "keywords": [
+    ],
+    "activationEvents": [
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "advanced-code-toolkit.helloWorld",
+                "title": "Hello World"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src",
+        "package": "vsce package",
+        "publish": "vsce publish"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.120.0",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "22.x",
+        "typescript-eslint": "^8.56.1",
+        "eslint": "^9.39.3",
+        "typescript": "^5.9.3",
+        "@vscode/test-cli": "^0.0.12",
+        "@vscode/test-electron": "^2.5.2"
+    }
+}
