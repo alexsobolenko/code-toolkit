@@ -14,3 +14,21 @@ The project is intended to collect small, practical tools that reduce repetitive
 ## Development Status
 
 This project is an early-stage extension scaffold. Features and behavior may change as the toolkit takes shape.
+
+## Features
+
+### Toggle Quotes
+
+Use command `Advanced code toolkit. Toggle quotes` to switch quotes around the cursor or selected text.
+
+![Example](https://raw.githubusercontent.com/alexsobolenko/code-toolkit/master/assets/gifs/toggle-quotes.gif)
+
+The quote order is controlled by `advanced-code-toolkit.toggle-quotes.quotes-order`.
+
+Default order:
+
+```json
+{
+    "advanced-code-toolkit.toggle-quotes.quotes-order": ["'", "\"", "`"]
+}
+```

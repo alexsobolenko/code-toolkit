@@ -1,8 +1,10 @@
-import * as vscode from 'vscode';
+import {commands, ExtensionContext} from 'vscode';
+import App from './app';
+import {CMD_TOGGLE_QUOTES} from './constants';
 
-export function activate(context: vscode.ExtensionContext) {
-    context.subscriptions.push(vscode.commands.registerCommand('advanced-code-toolkit.helloWorld', () => {
-        vscode.window.showInformationMessage('Hello World from advanced-code-toolkit!');
+export function activate(context: ExtensionContext) {
+    context.subscriptions.push(commands.registerCommand(CMD_TOGGLE_QUOTES, () => {
+        App.instance.toggleQuotes();
     }));
 }
 

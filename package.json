@@ -27,10 +27,42 @@
     "contributes": {
         "commands": [
             {
-                "command": "advanced-code-toolkit.helloWorld",
-                "title": "Hello World"
+                "command": "advanced-code-toolkit.toggle-quotes",
+                "title": "Advanced code toolkit. Toggle quotes"
             }
-        ]
+        ],
+        "keybindings": [
+            {
+                "command": "advanced-code-toolkit.toggle-quotes",
+                "key": "ctrl+'",
+                "mac": "cmd+'",
+                "when": "editorTextFocus"
+            }
+        ],
+        "configuration": {
+            "title": "Advanced code toolkit",
+            "properties": {
+                "advanced-code-toolkit.toggle-quotes.quotes-order": {
+                    "type": "array",
+                    "default": [
+                        "'",
+                        "\"",
+                        "`"
+                    ],
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "'",
+                            "\"",
+                            "`"
+                        ]
+                    },
+                    "minItems": 2,
+                    "uniqueItems": true,
+                    "description": "Quote order for toggle quotes feature."
+                }
+            }
+        }
     },
     "scripts": {
         "compile": "tsc -p ./",
