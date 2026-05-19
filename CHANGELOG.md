@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.3] - 2026-05-19
+
+- Fixed fatal error
+
 ## [0.1.2] - 2026-05-19
 
 - Added toggle multiline expression feature
