@@ -2,7 +2,7 @@
     "name": "advanced-code-toolkit",
     "displayName": "Advanced code toolkit",
     "description": "A Visual Studio Code toolkit focused on simplifying everyday development workflows.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "license": "MIT",
     "author": {
         "name": "Alexey Sobolenko",
@@ -89,6 +89,10 @@
             {
                 "command": "advanced-code-toolkit.toggle-case-upper-first",
                 "title": "Advanced code toolkit. Toggle case 'upperFirst'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-multiline-expression",
+                "title": "Advanced code toolkit. Toggle multiline expression"
             }
         ],
         "keybindings": [
@@ -120,6 +124,21 @@
                     "minItems": 2,
                     "uniqueItems": true,
                     "description": "Quote order for toggle quotes feature."
+                },
+                "advanced-code-toolkit.toggle-multiline-expression.function-trailing-comma": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Add trailing comma when expanding function calls and declarations, if the current language supports it."
+                },
+                "advanced-code-toolkit.toggle-multiline-expression.array-trailing-comma": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Add trailing comma when expanding arrays, if the current language supports it."
+                },
+                "advanced-code-toolkit.toggle-multiline-expression.object-trailing-comma": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Add trailing comma when expanding objects, if the current language supports it."
                 }
             }
         }

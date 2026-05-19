@@ -57,3 +57,80 @@ Available transformations:
 - `upperFirst`
 
 Each transformation is also available as a separate command, for example `Advanced code toolkit. Toggle case 'camel'`.
+
+### Toggle Multiline Expression
+
+Use command `Advanced code toolkit. Toggle multiline expression` to switch the nearest supported expression between one-line and multiline formatting.
+
+The command is currently focused on PHP, JavaScript, and TypeScript. Other languages may work in simple cases, but problems are possible because every language has its own syntax rules. Support for languages outside PHP, JavaScript, and TypeScript needs language-specific refinement.
+
+Supported expression types:
+
+- function and method calls;
+- function and method declarations;
+- arrays;
+- objects.
+
+PHP examples:
+
+```php
+$items = ['first', 'second', 'third'];
+```
+
+```php
+$items = [
+    'first',
+    'second',
+    'third',
+];
+```
+
+```php
+$result = buildResponse($status, $payload, $headers);
+```
+
+```php
+$result = buildResponse(
+    $status,
+    $payload,
+    $headers
+);
+```
+
+JavaScript examples:
+
+```js
+const user = {id: 1, name: 'Alex', active: true};
+```
+
+```js
+const user = {
+    id: 1,
+    name: 'Alex',
+    active: true,
+};
+```
+
+```js
+const result = createUser(id, name, options);
+```
+
+```js
+const result = createUser(
+    id,
+    name,
+    options
+);
+```
+
+Trailing commas are controlled by separate settings:
+
+```json
+{
+    "advanced-code-toolkit.toggle-multiline-expression.function-trailing-comma": false,
+    "advanced-code-toolkit.toggle-multiline-expression.array-trailing-comma": true,
+    "advanced-code-toolkit.toggle-multiline-expression.object-trailing-comma": true
+}
+```
+
+The command avoids collapsing expressions with line comments because moving them into one line can change the meaning of the code.

@@ -17,8 +17,13 @@ export const CMD_TOGGLE_CASE_TITLE = 'advanced-code-toolkit.toggle-case-title';
 export const CMD_TOGGLE_CASE_UPPER = 'advanced-code-toolkit.toggle-case-upper';
 export const CMD_TOGGLE_CASE_UPPER_FIRST = 'advanced-code-toolkit.toggle-case-upper-first';
 
+export const CMD_TOGGLE_MULTILINE_EXPRESSION = 'advanced-code-toolkit.toggle-multiline-expression';
+
 /* parameters */
 export const Q_QUOTES_ORDER = 'toggle-quotes.quotes-order';
+export const M_FUNCTION_TRAILING_COMMA = 'toggle-multiline-expression.function-trailing-comma';
+export const M_ARRAY_TRAILING_COMMA = 'toggle-multiline-expression.array-trailing-comma';
+export const M_OBJECT_TRAILING_COMMA = 'toggle-multiline-expression.object-trailing-comma';
 
 /* messages */
 export const M_ERROR = 'error';
@@ -27,6 +32,10 @@ export const M_INFO = 'info';
 
 /* toggle case */
 export const C_WORD_CHARACTER_REGEX = /([\w_\-\/]+)/;
+
+/* toggle multiline expression */
+export const C_SIGNATURE_OPENING_BRACE_REGEX = /^[ \t]*(:[^\r\n{]+)?\r?\n[ \t]*\{/;
+export const C_NEXT_LINE_OPENING_BRACE_REGEX = /\r?\n[ \t]*\{$/;
 
 export const C_LABEL_CAMEL = 'camel';
 export const C_LABEL_CONSTANT = 'constant';

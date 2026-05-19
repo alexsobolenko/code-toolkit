@@ -30,6 +30,7 @@ import {
     CMD_TOGGLE_CASE_TITLE,
     CMD_TOGGLE_CASE_UPPER,
     CMD_TOGGLE_CASE_UPPER_FIRST,
+    CMD_TOGGLE_MULTILINE_EXPRESSION,
     CMD_TOGGLE_QUOTES,
 } from './constants';
 
@@ -62,6 +63,11 @@ export function activate(context: ExtensionContext) {
             App.instance.toggleCase(item.label);
         }));
     });
+
+    /* toggle multiline expression */
+    context.subscriptions.push(commands.registerCommand(CMD_TOGGLE_MULTILINE_EXPRESSION, () => {
+        App.instance.toggleMultilineExpression();
+    }));
 }
 
 export function deactivate() {}

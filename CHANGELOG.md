@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.2] - 2026-05-19
+
+- Added toggle multiline expression feature
+
 ## [0.1.1] - 2026-05-19
 
 - Added toggle case feature

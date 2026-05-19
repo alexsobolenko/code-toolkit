@@ -9,17 +9,20 @@ import {
 import {M_ERROR, M_INFO, M_WARNING} from './constants';
 import QuotesToggler from './features/toggle-quotes/quotes-toggler';
 import CaseToggler from './features/toggle-case/case-toggler';
+import MultilineExpressionToggler from './features/toggle-multiline-expression/multiline-expression-toggler';
 
 export default class App {
     private static _instance: App;
     private _config: WorkspaceConfiguration;
     private _quotesToggler: QuotesToggler;
     private _caseToggler: CaseToggler;
+    private _multilineExpressionToggler: MultilineExpressionToggler;
 
     private constructor() {
         this._config = workspace.getConfiguration('advanced-code-toolkit');
         this._quotesToggler = new QuotesToggler();
         this._caseToggler = new CaseToggler();
+        this._multilineExpressionToggler = new MultilineExpressionToggler();
     }
 
     public static get instance(): App {
@@ -36,6 +39,10 @@ export default class App {
 
     public toggleCase(caseType: string | null = null): void {
         this._caseToggler.proceed(caseType);
+    }
+
+    public toggleMultilineExpression(): void {
+        this._multilineExpressionToggler.proceed();
     }
 
     public get editor(): TextEditor {
