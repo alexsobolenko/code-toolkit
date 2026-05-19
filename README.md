@@ -32,3 +32,28 @@ Default order:
     "advanced-code-toolkit.toggle-quotes.quotes-order": ["'", "\"", "`"]
 }
 ```
+
+### Toggle Case
+
+Use command `Advanced code toolkit. Toggle case` to transform the current word or selected text.
+
+![Example](https://raw.githubusercontent.com/alexsobolenko/code-toolkit/master/assets/gifs/toggle-case.gif)
+
+Available transformations:
+
+- `camel`
+- `constant`
+- `dot`
+- `kebab`
+- `lower`
+- `lowerFirst`
+- `pascal`
+- `path`
+- `sentence`
+- `snake`
+- `swap`
+- `title`
+- `upper`
+- `upperFirst`
+
+Each transformation is also available as a separate command, for example `Advanced code toolkit. Toggle case 'camel'`.

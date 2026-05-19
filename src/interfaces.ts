@@ -1,4 +1,4 @@
-import {Selection} from 'vscode';
+import {Range, Selection} from 'vscode';
 
 /* toggle quotes */
 export interface IQuotes {
@@ -9,4 +9,10 @@ export interface IQuotes {
 export interface IQuotesChange {
     text: string;
     selection: Selection;
+}
+
+/* toggle case */
+export interface ISelectedText {
+    text: string | undefined;
+    range: Range | undefined;
 }

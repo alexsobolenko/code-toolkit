@@ -2,7 +2,7 @@
     "name": "advanced-code-toolkit",
     "displayName": "Advanced code toolkit",
     "description": "A Visual Studio Code toolkit focused on simplifying everyday development workflows.",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "license": "MIT",
     "author": {
         "name": "Alexey Sobolenko",
@@ -29,6 +29,66 @@
             {
                 "command": "advanced-code-toolkit.toggle-quotes",
                 "title": "Advanced code toolkit. Toggle quotes"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case",
+                "title": "Advanced code toolkit. Toggle case"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-camel",
+                "title": "Advanced code toolkit. Toggle case 'camel'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-constant",
+                "title": "Advanced code toolkit. Toggle case 'constant'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-dot",
+                "title": "Advanced code toolkit. Toggle case 'dot'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-kebab",
+                "title": "Advanced code toolkit. Toggle case 'kebab'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-lower",
+                "title": "Advanced code toolkit. Toggle case 'lower'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-lower-first",
+                "title": "Advanced code toolkit. Toggle case 'lowerFirst'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-pascal",
+                "title": "Advanced code toolkit. Toggle case 'pascal'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-path",
+                "title": "Advanced code toolkit. Toggle case 'path'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-sentence",
+                "title": "Advanced code toolkit. Toggle case 'sentence'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-snake",
+                "title": "Advanced code toolkit. Toggle case 'snake'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-swap",
+                "title": "Advanced code toolkit. Toggle case 'swap'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-title",
+                "title": "Advanced code toolkit. Toggle case 'title'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-upper",
+                "title": "Advanced code toolkit. Toggle case 'upper'"
+            },
+            {
+                "command": "advanced-code-toolkit.toggle-case-upper-first",
+                "title": "Advanced code toolkit. Toggle case 'upperFirst'"
             }
         ],
         "keybindings": [
@@ -73,12 +133,15 @@
         "package": "vsce package",
         "publish": "vsce publish"
     },
+    "dependencies": {
+        "change-case": "^4.1.2"
+    },
     "devDependencies": {
         "@commitlint/cli": "^20.5.3",
         "@commitlint/config-conventional": "^20.5.3",
         "@types/mocha": "^10.0.10",
         "@types/node": "22.x",
-        "@types/vscode": "^1.120.0",
+        "@types/vscode": "1.103.0",
         "@vscode/test-cli": "^0.0.12",
         "@vscode/test-electron": "^2.5.2",
         "eslint": "^9.39.3",
