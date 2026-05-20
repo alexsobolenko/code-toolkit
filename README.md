@@ -25,6 +25,10 @@ Use command `Advanced code toolkit. Toggle quotes` to switch quotes around the c
 
 The quote order is controlled by `advanced-code-toolkit.toggle-quotes.quotes-order`.
 
+Default keybindings:
+
+- toggle quotes: `Ctrl+'`;
+
 Default order:
 
 ```json
@@ -134,3 +138,26 @@ Trailing commas are controlled by separate settings:
 ```
 
 The command avoids collapsing expressions with line comments because moving them into one line can change the meaning of the code.
+
+### Increment and Decrement Number
+
+Use commands `Advanced code toolkit. Increment number` and `Advanced code toolkit. Decrement number` to change the natural number under the cursor.
+
+![Example](https://raw.githubusercontent.com/alexsobolenko/code-toolkit/master/assets/gifs/number-change.gif)
+
+Default keybindings:
+
+- increment: `Ctrl+Shift+NumpadAdd`;
+- decrement: `Ctrl+Shift+NumpadSubtract`.
+
+The command checks the characters directly to the left and right of the cursor. If there is no digit next to the cursor, nothing happens. Multiple cursors are supported, and the same number is changed only once.
+
+Examples:
+
+```txt
+0009 -> 0010
+0010 -> 0009
+0001 -> 0000
+```
+
+The value never goes below `0`. Leading zeros are preserved when possible.

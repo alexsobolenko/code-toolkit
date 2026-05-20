@@ -2,7 +2,7 @@
     "name": "advanced-code-toolkit",
     "displayName": "Advanced code toolkit",
     "description": "A Visual Studio Code toolkit focused on simplifying everyday development workflows.",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "license": "MIT",
     "author": {
         "name": "Alexey Sobolenko",
@@ -93,6 +93,14 @@
             {
                 "command": "advanced-code-toolkit.toggle-multiline-expression",
                 "title": "Advanced code toolkit. Toggle multiline expression"
+            },
+            {
+                "command": "advanced-code-toolkit.increment-number",
+                "title": "Advanced code toolkit. Increment number"
+            },
+            {
+                "command": "advanced-code-toolkit.decrement-number",
+                "title": "Advanced code toolkit. Decrement number"
             }
         ],
         "keybindings": [
@@ -100,6 +108,18 @@
                 "command": "advanced-code-toolkit.toggle-quotes",
                 "key": "ctrl+'",
                 "mac": "cmd+'",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "advanced-code-toolkit.increment-number",
+                "key": "ctrl+shift+[NumpadAdd]",
+                "mac": "cmd+shift+[NumpadAdd]",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "advanced-code-toolkit.decrement-number",
+                "key": "ctrl+shift+[NumpadSubtract]",
+                "mac": "cmd+shift+[NumpadSubtract]",
                 "when": "editorTextFocus"
             }
         ],

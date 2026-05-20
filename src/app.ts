@@ -10,6 +10,7 @@ import {M_ERROR, M_INFO, M_WARNING} from './constants';
 import QuotesToggler from './features/toggle-quotes/quotes-toggler';
 import CaseToggler from './features/toggle-case/case-toggler';
 import MultilineExpressionToggler from './features/toggle-multiline-expression/multiline-expression-toggler';
+import NumberChanger from './features/change-numbers/number-changer';
 
 export default class App {
     private static _instance: App;
@@ -17,12 +18,14 @@ export default class App {
     private _quotesToggler: QuotesToggler;
     private _caseToggler: CaseToggler;
     private _multilineExpressionToggler: MultilineExpressionToggler;
+    private _numberChanger: NumberChanger;
 
     private constructor() {
         this._config = workspace.getConfiguration('advanced-code-toolkit');
         this._quotesToggler = new QuotesToggler();
         this._caseToggler = new CaseToggler();
         this._multilineExpressionToggler = new MultilineExpressionToggler();
+        this._numberChanger = new NumberChanger();
     }
 
     public static get instance(): App {
@@ -43,6 +46,10 @@ export default class App {
 
     public toggleMultilineExpression(): void {
         this._multilineExpressionToggler.proceed();
+    }
+
+    public changeNumber(isIncDirection: boolean): void {
+        this._numberChanger.proceed(isIncDirection);
     }
 
     public get editor(): TextEditor {
@@ -72,6 +79,10 @@ export default class App {
 
     public uniq<T>(items: T[]): T[] {
         return [...new Set(items)];
+    }
+
+    public isDigit(character: string | undefined): boolean {
+        return character !== undefined && /^\d$/.test(character);
     }
 
     public toSelection(range: Range): Selection {

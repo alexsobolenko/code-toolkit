@@ -15,6 +15,8 @@ import {
     C_LABEL_TITLE,
     C_LABEL_UPPER,
     C_LABEL_UPPER_FIRST,
+    CMD_DECREMENT_NUMBER,
+    CMD_INCREMENT_NUMBER,
     CMD_TOGGLE_CASE,
     CMD_TOGGLE_CASE_CAMEL,
     CMD_TOGGLE_CASE_CONSTANT,
@@ -67,6 +69,14 @@ export function activate(context: ExtensionContext) {
     /* toggle multiline expression */
     context.subscriptions.push(commands.registerCommand(CMD_TOGGLE_MULTILINE_EXPRESSION, () => {
         App.instance.toggleMultilineExpression();
+    }));
+
+    /* change numbers */
+    context.subscriptions.push(commands.registerCommand(CMD_INCREMENT_NUMBER, () => {
+        App.instance.changeNumber(true);
+    }));
+    context.subscriptions.push(commands.registerCommand(CMD_DECREMENT_NUMBER, () => {
+        App.instance.changeNumber(false);
     }));
 }
 

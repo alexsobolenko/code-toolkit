@@ -19,6 +19,9 @@ export const CMD_TOGGLE_CASE_UPPER_FIRST = 'advanced-code-toolkit.toggle-case-up
 
 export const CMD_TOGGLE_MULTILINE_EXPRESSION = 'advanced-code-toolkit.toggle-multiline-expression';
 
+export const CMD_INCREMENT_NUMBER = 'advanced-code-toolkit.increment-number';
+export const CMD_DECREMENT_NUMBER = 'advanced-code-toolkit.decrement-number';
+
 /* parameters */
 export const Q_QUOTES_ORDER = 'toggle-quotes.quotes-order';
 export const M_FUNCTION_TRAILING_COMMA = 'toggle-multiline-expression.function-trailing-comma';

@@ -103,7 +103,7 @@ export default class MultilineExpressionToggler {
 
             return undefined;
         }, {languageId: document.languageId});
-я 
+
         return nearestBracketPair;
     }
 

@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.4] - 2026-05-20
+
+- Added increment and decrement number commands
+
 ## [0.1.3] - 2026-05-19
 
 - Fixed fatal error
