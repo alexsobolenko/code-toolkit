@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.5] - 2026-05-24
+
+- Highlight comments in code
+
 ## [0.1.4] - 2026-05-20
 
 - Added increment and decrement number commands

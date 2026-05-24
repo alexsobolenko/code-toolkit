@@ -1,4 +1,4 @@
-import {commands, ExtensionContext} from 'vscode';
+import {commands, ExtensionContext, extensions, window, workspace} from 'vscode';
 import App from './app';
 import {
     C_LABEL_CAMEL,
@@ -36,7 +36,7 @@ import {
     CMD_TOGGLE_QUOTES,
 } from './constants';
 
-export function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext) {
     /* toggle quotes */
     context.subscriptions.push(commands.registerCommand(CMD_TOGGLE_QUOTES, () => {
         App.instance.toggleQuotes();
@@ -78,6 +78,26 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(commands.registerCommand(CMD_DECREMENT_NUMBER, () => {
         App.instance.changeNumber(false);
     }));
+
+    /* comment highlights */
+    await App.instance.commentHighlightsParser.setRegex(App.instance.editor.document.languageId);
+    extensions.onDidChange(() => {
+        App.instance.commentHighlightsParser.config.updateLanguagesDefinitions();
+    }, null, context.subscriptions);
+    window.onDidChangeActiveTextEditor(async (editor) => {
+        if (editor) {
+            await App.instance.commentHighlightsParser.setRegex(App.instance.editor.document.languageId);
+            App.instance.provider.triggerUpdateDecorations();
+        }
+    }, null, context.subscriptions);
+    workspace.onDidChangeTextDocument((event) => {
+        if (event.document === App.instance.editor.document) {
+            App.instance.provider.triggerUpdateDecorations();
+        }
+    }, null, context.subscriptions);
+
+    /* provider */
+    App.instance.provider.triggerUpdateDecorations();
 }
 
 export function deactivate() {}

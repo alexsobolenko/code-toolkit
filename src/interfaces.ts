@@ -45,3 +45,17 @@ export interface ITextScannerOptions {
     onLineComment?: (startOffset: number, endOffset: number) => boolean | void;
     onSkippedRange?: (startOffset: number, endOffset: number, type: SkippedRangeType) => boolean | void;
 }
+
+/* comment highlights */
+export interface CommentTag {
+    tag: string;
+    escapedTag: string;
+    decoration: any;
+    ranges: Array<any>;
+}
+
+export interface CommentConfig {
+    lineComment?: string;
+    blockComment?: [string, string];
+}
+

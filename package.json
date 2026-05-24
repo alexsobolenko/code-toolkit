@@ -2,7 +2,7 @@
     "name": "advanced-code-toolkit",
     "displayName": "Advanced code toolkit",
     "description": "A Visual Studio Code toolkit focused on simplifying everyday development workflows.",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "license": "MIT",
     "author": {
         "name": "Alexey Sobolenko",
@@ -22,7 +22,9 @@
         "Programming Languages"
     ],
     "keywords": [],
-    "activationEvents": [],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
@@ -159,6 +161,102 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Add trailing comma when expanding objects, if the current language supports it."
+                },
+                "advanced-code-toolkit.comment-tags": {
+                    "type": "array",
+                    "default": [
+                        {
+                            "tag": "!",
+                            "color": "#FF2D00",
+                            "backgroundColor": "transparent",
+                            "strikethrough": false,
+                            "underline": false,
+                            "bold": true,
+                            "italic": false
+                        },
+                        {
+                            "tag": "?",
+                            "color": "#3498DB",
+                            "backgroundColor": "transparent",
+                            "strikethrough": false,
+                            "underline": false,
+                            "bold": true,
+                            "italic": false
+                        },
+                        {
+                            "tag": "TODO",
+                            "color": "#FF8C00",
+                            "backgroundColor": "transparent",
+                            "strikethrough": false,
+                            "underline": false,
+                            "bold": true,
+                            "italic": false
+                        },
+                        {
+                            "tag": "FIXME",
+                            "color": "#FF2D00",
+                            "backgroundColor": "transparent",
+                            "strikethrough": false,
+                            "underline": false,
+                            "bold": true,
+                            "italic": false
+                        },
+                        {
+                            "tag": "NOTE",
+                            "color": "#6A9955",
+                            "backgroundColor": "transparent",
+                            "strikethrough": false,
+                            "underline": false,
+                            "bold": true,
+                            "italic": false
+                        },
+                        {
+                            "tag": "//",
+                            "color": "#6A9955",
+                            "backgroundColor": "transparent",
+                            "strikethrough": true,
+                            "underline": false,
+                            "bold": false,
+                            "italic": true
+                        }
+                    ],
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "tag": {
+                                "type": "string"
+                            },
+                            "color": {
+                                "type": "string"
+                            },
+                            "backgroundColor": {
+                                "type": "string"
+                            },
+                            "strikethrough": {
+                                "type": "boolean"
+                            },
+                            "underline": {
+                                "type": "boolean"
+                            },
+                            "bold": {
+                                "type": "boolean"
+                            },
+                            "italic": {
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    "description": "Comment marker styles for the comment highlights feature."
+                },
+                "advanced-code-toolkit.comment-highlight-plain-text": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Highlight comment markers in plain text files."
+                },
+                "advanced-code-toolkit.comment-highlight-multiline": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Highlight comment markers inside block comments."
                 }
             }
         }
@@ -173,7 +271,8 @@
         "publish": "vsce publish"
     },
     "dependencies": {
-        "change-case": "^4.1.2"
+        "change-case": "^4.1.2",
+        "json5": "^2.2.3"
     },
     "devDependencies": {
         "@commitlint/cli": "^20.5.3",

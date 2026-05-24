@@ -1,4 +1,5 @@
 import {
+    DecorationOptions,
     Range,
     Selection,
     TextEditor,
@@ -11,21 +12,27 @@ import QuotesToggler from './features/toggle-quotes/quotes-toggler';
 import CaseToggler from './features/toggle-case/case-toggler';
 import MultilineExpressionToggler from './features/toggle-multiline-expression/multiline-expression-toggler';
 import NumberChanger from './features/change-numbers/number-changer';
+import {Configuration, Parser} from './features/comment-highlights';
+import Provider from './features/decorator/provider';
 
 export default class App {
     private static _instance: App;
     private _config: WorkspaceConfiguration;
+    private _provider: Provider;
     private _quotesToggler: QuotesToggler;
     private _caseToggler: CaseToggler;
     private _multilineExpressionToggler: MultilineExpressionToggler;
     private _numberChanger: NumberChanger;
+    private _commentHighlightsParser: Parser;
 
     private constructor() {
         this._config = workspace.getConfiguration('advanced-code-toolkit');
+        this._provider = new Provider();
         this._quotesToggler = new QuotesToggler();
         this._caseToggler = new CaseToggler();
         this._multilineExpressionToggler = new MultilineExpressionToggler();
         this._numberChanger = new NumberChanger();
+        this._commentHighlightsParser = new Parser(new Configuration());
     }
 
     public static get instance(): App {
@@ -60,6 +67,14 @@ export default class App {
         return window.activeTextEditor;
     }
 
+    public get commentHighlightsParser(): Parser {
+        return this._commentHighlightsParser;
+    }
+
+    public get provider(): Provider {
+        return this._provider;
+    }
+
     public config(key: string, defaultValue: any = null): any {
         return this._config.get(key, defaultValue);
     }
@@ -87,5 +102,9 @@ export default class App {
 
     public toSelection(range: Range): Selection {
         return new Selection(range.start, range.end);
+    }
+
+    public toDecorationOptions(range: Range): DecorationOptions {
+        return {range};
     }
 }
