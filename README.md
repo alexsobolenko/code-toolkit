@@ -21,7 +21,7 @@ This project is an early-stage extension scaffold. Features and behavior may cha
 
 Use command `Advanced code toolkit. Toggle quotes` to switch quotes around the cursor or selected text.
 
-![Example](https://raw.githubusercontent.com/alexsobolenko/code-toolkit/master/assets/gifs/toggle-quotes.gif)
+![Example](./assets/gifs/toggle-quotes.gif)
 
 The quote order is controlled by `advanced-code-toolkit.toggle-quotes.quotes-order`.
 
@@ -41,7 +41,7 @@ Default order:
 
 Use command `Advanced code toolkit. Toggle case` to transform the current word or selected text.
 
-![Example](https://raw.githubusercontent.com/alexsobolenko/code-toolkit/master/assets/gifs/toggle-case.gif)
+![Example](./assets/gifs/toggle-case.gif)
 
 Available transformations:
 
@@ -143,7 +143,7 @@ The command avoids collapsing expressions with line comments because moving them
 
 Use commands `Advanced code toolkit. Increment number` and `Advanced code toolkit. Decrement number` to change the natural number under the cursor.
 
-![Example](https://raw.githubusercontent.com/alexsobolenko/code-toolkit/master/assets/gifs/number-change.gif)
+![Example](./assets/gifs/number-change.gif)
 
 Default keybindings:
 
