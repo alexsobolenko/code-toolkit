@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.2.0] - 2026-05-26
+
+- Added automated tests for extension features
+- Added CI pipelines for GitHub, GitLab, and Codeberg
+
 ## [0.1.6] - 2026-05-26
 
 - Added color highlights for HEX, RGB/RGBA, HSL/HSLA, and CSS color names

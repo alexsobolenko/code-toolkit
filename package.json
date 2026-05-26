@@ -2,7 +2,7 @@
     "name": "advanced-code-toolkit",
     "displayName": "Advanced code toolkit",
     "description": "A Visual Studio Code toolkit focused on simplifying everyday development workflows.",
-    "version": "0.1.6",
+    "version": "0.2.0",
     "license": "MIT",
     "author": {
         "name": "Alexey Sobolenko",
