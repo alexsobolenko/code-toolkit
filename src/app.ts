@@ -12,7 +12,14 @@ import QuotesToggler from './features/toggle-quotes/quotes-toggler';
 import CaseToggler from './features/toggle-case/case-toggler';
 import MultilineExpressionToggler from './features/toggle-multiline-expression/multiline-expression-toggler';
 import NumberChanger from './features/change-numbers/number-changer';
-import {Configuration, Parser} from './features/comment-highlights';
+import {
+    Configuration as CommentHighlightsConfiguration,
+    Parser as CommentHighlightsParser,
+} from './features/comment-highlights';
+import {
+    Configuration as ColorHighlightsConfiguration,
+    Parser as ColorHighlightsParser,
+} from './features/color-highlights';
 import Provider from './features/decorator/provider';
 
 export default class App {
@@ -23,7 +30,8 @@ export default class App {
     private _caseToggler: CaseToggler;
     private _multilineExpressionToggler: MultilineExpressionToggler;
     private _numberChanger: NumberChanger;
-    private _commentHighlightsParser: Parser;
+    private _commentHighlightsParser: CommentHighlightsParser;
+    private _colorHighlightsParser: ColorHighlightsParser;
 
     private constructor() {
         this._config = workspace.getConfiguration('advanced-code-toolkit');
@@ -32,7 +40,8 @@ export default class App {
         this._caseToggler = new CaseToggler();
         this._multilineExpressionToggler = new MultilineExpressionToggler();
         this._numberChanger = new NumberChanger();
-        this._commentHighlightsParser = new Parser(new Configuration());
+        this._commentHighlightsParser = new CommentHighlightsParser(new CommentHighlightsConfiguration());
+        this._colorHighlightsParser = new ColorHighlightsParser(new ColorHighlightsConfiguration());
     }
 
     public static get instance(): App {
@@ -67,12 +76,20 @@ export default class App {
         return window.activeTextEditor;
     }
 
-    public get commentHighlightsParser(): Parser {
+    public get commentHighlightsParser(): CommentHighlightsParser {
         return this._commentHighlightsParser;
+    }
+
+    public get colorHighlightsParser(): ColorHighlightsParser {
+        return this._colorHighlightsParser;
     }
 
     public get provider(): Provider {
         return this._provider;
+    }
+
+    public refreshConfig(): void {
+        this._config = workspace.getConfiguration('advanced-code-toolkit');
     }
 
     public config(key: string, defaultValue: any = null): any {

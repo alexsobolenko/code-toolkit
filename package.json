@@ -2,7 +2,7 @@
     "name": "advanced-code-toolkit",
     "displayName": "Advanced code toolkit",
     "description": "A Visual Studio Code toolkit focused on simplifying everyday development workflows.",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "license": "MIT",
     "author": {
         "name": "Alexey Sobolenko",
@@ -250,13 +250,44 @@
                 },
                 "advanced-code-toolkit.comment-highlight-plain-text": {
                     "type": "boolean",
-                    "default": false,
+                    "default": true,
                     "description": "Highlight comment markers in plain text files."
                 },
                 "advanced-code-toolkit.comment-highlight-multiline": {
                     "type": "boolean",
-                    "default": false,
+                    "default": true,
                     "description": "Highlight comment markers inside block comments."
+                },
+                "advanced-code-toolkit.color-highlight.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Highlight color values in the active editor."
+                },
+                "advanced-code-toolkit.color-highlight.mode": {
+                    "type": "string",
+                    "default": "background",
+                    "enum": ["background", "border", "dot"],
+                    "description": "Display mode for color highlights."
+                },
+                "advanced-code-toolkit.color-highlight.hex": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Highlight HEX color values."
+                },
+                "advanced-code-toolkit.color-highlight.rgb": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Highlight RGB and RGBA color values."
+                },
+                "advanced-code-toolkit.color-highlight.hsl": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Highlight HSL and HSLA color values."
+                },
+                "advanced-code-toolkit.color-highlight.css-names": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Highlight CSS color names."
                 }
             }
         }

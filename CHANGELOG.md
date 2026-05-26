@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.6] - 2026-05-26
+
+- Added color highlights for HEX, RGB/RGBA, HSL/HSLA, and CSS color names
+
 ## [0.1.5] - 2026-05-24
 
 - Highlight comments in code

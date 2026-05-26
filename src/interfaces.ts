@@ -1,4 +1,4 @@
-import {Range, Selection} from 'vscode';
+import {DecorationOptions, Range, Selection, TextEditorDecorationType} from 'vscode';
 import type BracketPair from './features/toggle-multiline-expression/bracket-pair';
 import type {ExpressionKind, SkippedRangeType} from './types';
 
@@ -59,3 +59,26 @@ export interface CommentConfig {
     blockComment?: [string, string];
 }
 
+/* color highlights */
+export interface IParsedColor {
+    red: number;
+    green: number;
+    blue: number;
+    alpha: number;
+}
+
+export interface IColorHighlightMatch {
+    startOffset: number;
+    endOffset: number;
+    color: IParsedColor;
+}
+
+export interface IColorHighlightDecoration {
+    decoration: TextEditorDecorationType;
+    ranges: DecorationOptions[];
+}
+
+export interface IColorFunctionParts {
+    channels: string[];
+    alpha?: string;
+}

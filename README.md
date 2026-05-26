@@ -200,3 +200,37 @@ The marker list and styles are controlled by `advanced-code-toolkit.comment-tags
 ```
 
 Plain text highlighting is opt-in because plain text files do not have a comment delimiter. When enabled, markers are detected at the start of a line. After changing marker definitions or styles, reload the VS Code window so decorations are recreated.
+
+### Color Highlights
+
+Color Highlights automatically decorates color values in the active editor.
+
+![Example](./assets/imgs/color-highlights.png)
+
+Supported formats:
+
+- HEX: `#fff`, `#ffffff`, `#ffffffff`;
+- RGB/RGBA: `rgb(255, 0, 0)`, `rgba(255, 0, 0, 0.5)`;
+- HSL/HSLA: `hsl(120, 100%, 50%)`, `hsla(120, 100%, 50%, 0.5)`;
+- CSS color names: `red`, `dodgerblue`, `rebeccapurple`.
+
+The display mode is controlled by `advanced-code-toolkit.color-highlight.mode`.
+
+Available modes:
+
+- `background`;
+- `border`;
+- `dot`.
+
+Example configuration:
+
+```json
+{
+    "advanced-code-toolkit.color-highlight.enabled": true,
+    "advanced-code-toolkit.color-highlight.mode": "background",
+    "advanced-code-toolkit.color-highlight.hex": true,
+    "advanced-code-toolkit.color-highlight.rgb": true,
+    "advanced-code-toolkit.color-highlight.hsl": true,
+    "advanced-code-toolkit.color-highlight.css-names": true
+}
+```

@@ -24,5 +24,9 @@ export default class Provider {
         }
 
         App.instance.commentHighlightsParser.applyDecorations();
+
+        /* color highlights */
+        App.instance.colorHighlightsParser.findColors();
+        App.instance.colorHighlightsParser.applyDecorations();
     }
 }

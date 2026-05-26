@@ -79,7 +79,8 @@ export async function activate(context: ExtensionContext) {
         App.instance.changeNumber(false);
     }));
 
-    /* comment highlights */
+    /* provider (comment highlights, color highlights) */
+    App.instance.provider.triggerUpdateDecorations();
     await App.instance.commentHighlightsParser.setRegex(App.instance.editor.document.languageId);
     extensions.onDidChange(() => {
         App.instance.commentHighlightsParser.config.updateLanguagesDefinitions();
@@ -95,9 +96,13 @@ export async function activate(context: ExtensionContext) {
             App.instance.provider.triggerUpdateDecorations();
         }
     }, null, context.subscriptions);
-
-    /* provider */
-    App.instance.provider.triggerUpdateDecorations();
+    workspace.onDidChangeConfiguration((event) => {
+        App.instance.refreshConfig();
+        if (event.affectsConfiguration('advanced-code-toolkit.color-highlight')) {
+            App.instance.colorHighlightsParser.refreshDecorations();
+            App.instance.provider.triggerUpdateDecorations();
+        }
+    }, null, context.subscriptions);
 }
 
 export function deactivate() {}
