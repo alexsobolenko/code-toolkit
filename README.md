@@ -168,7 +168,7 @@ Comment Highlights automatically styles marked comments in the active editor. It
 
 ![Example](./assets/imgs/comment-highlights.png)
 
-Markers are case-insensitive and the whole matching comment line is decorated. JavaScript, TypeScript, React variants, and Apex also highlight matching markers inside JSDoc-style comments. Highlighting inside regular block comments is disabled by default and can be enabled with `advanced-code-toolkit.comment-highlight-multiline`.
+Markers are case-insensitive and the whole matching comment line is decorated. JavaScript, TypeScript, React variants, and Apex also highlight matching markers inside JSDoc-style comments. Highlighting inside regular block comments is enabled by default and can be controlled with `advanced-code-toolkit.comment-highlight-multiline`.
 
 The marker list and styles are controlled by `advanced-code-toolkit.comment-tags`:
 
@@ -194,12 +194,12 @@ The marker list and styles are controlled by `advanced-code-toolkit.comment-tags
             "italic": false
         }
     ],
-    "advanced-code-toolkit.comment-highlight-plain-text": false,
-    "advanced-code-toolkit.comment-highlight-multiline": false
+    "advanced-code-toolkit.comment-highlight-plain-text": true,
+    "advanced-code-toolkit.comment-highlight-multiline": true
 }
 ```
 
-Plain text highlighting is opt-in because plain text files do not have a comment delimiter. When enabled, markers are detected at the start of a line. After changing marker definitions or styles, reload the VS Code window so decorations are recreated.
+Plain text files do not have a comment delimiter, so markers are detected at the start of a line. After changing marker definitions or styles, reload the VS Code window so decorations are recreated.
 
 ### Color Highlights
 

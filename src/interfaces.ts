@@ -82,3 +82,10 @@ export interface IColorFunctionParts {
     channels: string[];
     alpha?: string;
 }
+
+export interface IColorScannerOptions {
+    highlightHex: boolean;
+    highlightRgb: boolean;
+    highlightHsl: boolean;
+    highlightCssNames: boolean;
+}

@@ -55,6 +55,13 @@ export const C_SIGNATURE_OPENING_BRACE_REGEX = /^[ \t]*(:[^\r\n{]+)?\r?\n[ \t]*\
 export const C_NEXT_LINE_OPENING_BRACE_REGEX = /\r?\n[ \t]*\{$/;
 
 /* color highlights */
+export const C_COLOR_HEX_REGEX = /(^|[^A-Za-z0-9_#])(#(?:[0-9A-F]{8}|[0-9A-F]{6}|[0-9A-F]{3}))(?![A-Za-z0-9_])/ig;
+export const C_COLOR_RGB_REGEX = /\brgba?\(\s*[^()\r\n]*\)/ig;
+export const C_COLOR_HSL_REGEX = /\bhsla?\(\s*[^()\r\n]*\)/ig;
+export const C_COLOR_FUNCTION_START_REGEX = /^[a-z]+\(/i;
+export const C_COLOR_FUNCTION_END_REGEX = /\)$/;
+export const C_COLOR_FUNCTION_SPACE_SEPARATOR_REGEX = /\s+/;
+export const C_COLOR_HUE_REGEX = /^([+-]?(?:\d+|\d*\.\d+))(deg|rad|turn)?$/i;
 export const C_CSS_COLOR_NAMES: Record<string, string> = {
     aliceblue: '#f0f8ff',
     antiquewhite: '#faebd7',
@@ -205,3 +212,10 @@ export const C_CSS_COLOR_NAMES: Record<string, string> = {
     yellow: '#ffff00',
     yellowgreen: '#9acd32',
 };
+export const C_CSS_COLOR_NAME_PATTERN = Object.keys(C_CSS_COLOR_NAMES)
+    .sort((a, b) => b.length - a.length)
+    .join('|');
+export const C_CSS_COLOR_NAME_REGEX = new RegExp(
+    `(^|[^A-Za-z0-9_-])(${C_CSS_COLOR_NAME_PATTERN})(?![A-Za-z0-9_-])`,
+    'ig',
+);

@@ -34,7 +34,8 @@ export default class App {
     private _colorHighlightsParser: ColorHighlightsParser;
 
     private constructor() {
-        this._config = workspace.getConfiguration('advanced-code-toolkit');
+        this.refreshConfig();
+
         this._provider = new Provider();
         this._quotesToggler = new QuotesToggler();
         this._caseToggler = new CaseToggler();
