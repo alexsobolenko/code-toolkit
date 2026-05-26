@@ -161,3 +161,42 @@ Examples:
 ```
 
 The value never goes below `0`. Leading zeros are preserved when possible.
+
+### Comment Highlights
+
+Comment Highlights automatically styles marked comments in the active editor. It uses the current language comment configuration, so markers are detected after the language's line comment delimiter, for example `// TODO`, `# FIXME`, or `<!-- NOTE` when the language configuration supports that syntax.
+
+![Example](./assets/imgs/comment-highlights.png)
+
+Markers are case-insensitive and the whole matching comment line is decorated. JavaScript, TypeScript, React variants, and Apex also highlight matching markers inside JSDoc-style comments. Highlighting inside regular block comments is disabled by default and can be enabled with `advanced-code-toolkit.comment-highlight-multiline`.
+
+The marker list and styles are controlled by `advanced-code-toolkit.comment-tags`:
+
+```json
+{
+    "advanced-code-toolkit.comment-tags": [
+        {
+            "tag": "TODO",
+            "color": "#FF8C00",
+            "backgroundColor": "transparent",
+            "strikethrough": false,
+            "underline": false,
+            "bold": true,
+            "italic": false
+        },
+        {
+            "tag": "BUG",
+            "color": "#FF2D00",
+            "backgroundColor": "transparent",
+            "strikethrough": false,
+            "underline": true,
+            "bold": true,
+            "italic": false
+        }
+    ],
+    "advanced-code-toolkit.comment-highlight-plain-text": false,
+    "advanced-code-toolkit.comment-highlight-multiline": false
+}
+```
+
+Plain text highlighting is opt-in because plain text files do not have a comment delimiter. When enabled, markers are detected at the start of a line. After changing marker definitions or styles, reload the VS Code window so decorations are recreated.
