@@ -1,5 +1,6 @@
 import {
     DecorationRenderOptions,
+    Disposable,
     Range,
     TextEditor,
     Uri,
@@ -13,7 +14,7 @@ import {CONFIG} from '../constants';
 import {ICommentConfig, ICommentTag, ILanguageState} from '../interfaces';
 import Feature from '../feature';
 
-export default class CommentHighlighter extends Feature {
+export default class CommentHighlighter extends Feature implements Disposable {
     private tags: ICommentTag[] = [];
     private languageConfigFiles = new Map<string, string>();
     private commentConfigs = new Map<string, ICommentConfig | undefined>();

@@ -1,6 +1,7 @@
 import {
     DecorationRangeBehavior,
     DecorationRenderOptions,
+    Disposable,
     Range,
     TextEditor,
     window,
@@ -11,7 +12,7 @@ import type {ColorHighlightMode} from '../types';
 import Feature from '../feature';
 import ColorScanner from '../service/color-scanner';
 
-export default class ColorHighlighter extends Feature {
+export default class ColorHighlighter extends Feature implements Disposable {
     private readonly decorations = new Map<string, IColorDecoration>();
     private readonly scanner = new ColorScanner();
 
