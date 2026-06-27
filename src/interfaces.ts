@@ -1,4 +1,4 @@
-import {DecorationOptions, TextEditorDecorationType} from 'vscode';
+import {DecorationOptions, Range, TextEditorDecorationType} from 'vscode';
 
 export interface IParsedColor {
     red: number;
@@ -47,4 +47,9 @@ export interface ILanguageState {
     blockCommentStart: string;
     blockCommentEnd: string;
     expression: string;
+}
+
+export interface INumberChangeAction {
+    range: Range;
+    replacement: string;
 }

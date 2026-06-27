@@ -1,7 +1,8 @@
-import {ExtensionContext, extensions, window, workspace} from 'vscode';
-import {EXT_ID} from './constants';
+import {ExtensionContext, commands, extensions, window, workspace} from 'vscode';
+import {EXT_ID, COMMAND} from './constants';
 import CommentHighlighter from './decorator/comment-highlighter';
 import ColorHighlighter from './decorator/color-highlighter';
+import NumberChanger from './feature/number-changer';
 
 export async function activate(context: ExtensionContext) {
     const commentHighlight = new CommentHighlighter();
@@ -23,6 +24,15 @@ export async function activate(context: ExtensionContext) {
             colorHighlight.update(editor);
         }, 100);
     };
+
+    /* increment and decrement number commands */
+    const numberChanger = new NumberChanger();
+    context.subscriptions.push(commands.registerCommand(COMMAND.INCREMENT_NUMBER, () => {
+        numberChanger.proceed(true);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.DECREMENT_NUMBER, () => {
+        numberChanger.proceed(false);
+    }));
 
     /* initial decoration */
     const editor = window.activeTextEditor;
