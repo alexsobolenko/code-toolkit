@@ -49,6 +49,12 @@ export const CONFIG = {
     },
 } as const;
 
+export const MESSAGE = {
+    ERROR: 'error',
+    WARNING: 'warning',
+    INFO: 'info',
+};
+
 export const COLOR_HEX_REGEX = /(^|[^A-Za-z0-9_#])(#(?:[0-9A-F]{8}|[0-9A-F]{6}|[0-9A-F]{3}))(?![A-Za-z0-9_])/ig;
 export const COLOR_RGB_REGEX = /\brgba?\(\s*[^()\r\n]*\)/ig;
 export const COLOR_HSL_REGEX = /\bhsla?\(\s*[^()\r\n]*\)/ig;

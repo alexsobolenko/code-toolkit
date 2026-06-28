@@ -1,4 +1,4 @@
-import {DecorationOptions, Range, TextEditorDecorationType} from 'vscode';
+import {DecorationOptions, Range, Selection, TextEditorDecorationType} from 'vscode';
 
 export interface IParsedColor {
     red: number;
@@ -52,4 +52,21 @@ export interface ILanguageState {
 export interface INumberChangeAction {
     range: Range;
     replacement: string;
+}
+export interface IQuotes {
+    begin: string;
+    end: string;
+}
+
+export interface IQuotesChange {
+    text: string;
+    selection: Selection;
+}
+
+export interface IQuotesSelection {
+    line: number;
+    lineText: string;
+    start: number;
+    end: number;
+    quotes: IQuotes;
 }

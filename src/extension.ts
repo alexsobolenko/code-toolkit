@@ -3,6 +3,7 @@ import {EXT_ID, COMMAND} from './constants';
 import CommentHighlighter from './decorator/comment-highlighter';
 import ColorHighlighter from './decorator/color-highlighter';
 import NumberChanger from './feature/number-changer';
+import QuotesToggler from './feature/quotes-toggler';
 
 export async function activate(context: ExtensionContext) {
     const commentHighlight = new CommentHighlighter();
@@ -24,6 +25,12 @@ export async function activate(context: ExtensionContext) {
             colorHighlight.update(editor);
         }, 100);
     };
+
+    /* toggle quotes command */
+    const quotesToggler = new QuotesToggler();
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_QUOTES, () => {
+        quotesToggler.proceed();
+    }));
 
     /* increment and decrement number commands */
     const numberChanger = new NumberChanger();
