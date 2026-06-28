@@ -384,3 +384,22 @@ export const CSS_COLOR_NAME_REGEX = new RegExp(
     `(^|[^A-Za-z0-9_-])(${CSS_COLOR_NAME_PATTERN})(?![A-Za-z0-9_-])`,
     'ig',
 );
+
+export const CASE_WORD_CHARACTER_REGEX = /([\w_\-\/]+)/;
+
+export const CASE = {
+    CAMEL: 'camel',
+    CONSTANT: 'constant',
+    DOT: 'dot',
+    KEBAB: 'kebab',
+    LOWER: 'lower',
+    LOWER_FIRST: 'lowerFirst',
+    PASCAL: 'pascal',
+    PATH: 'path',
+    SENTENCE: 'sentence',
+    SNAKE: 'snake',
+    SWAP: 'swap',
+    TITLE: 'title',
+    UPPER: 'upper',
+    UPPER_FIRST: 'upperFirst',
+};

@@ -1,4 +1,5 @@
 import {DecorationOptions, Range, Selection, TextEditorDecorationType} from 'vscode';
+import type {StringProcessor} from './types';
 
 export interface IParsedColor {
     red: number;
@@ -69,4 +70,23 @@ export interface IQuotesSelection {
     start: number;
     end: number;
     quotes: IQuotes;
+}
+
+export interface ICaseTransformCommand {
+    label: string;
+    description: string;
+    transform: StringProcessor;
+}
+
+export interface IReplacementAction {
+    text: string;
+    range: Range;
+    replacement: string;
+    offset: number;
+    newRange: Range;
+}
+
+export interface ISelectedText {
+    text: string | undefined;
+    range: Range | undefined;
 }

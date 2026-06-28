@@ -1,9 +1,10 @@
 import {ExtensionContext, commands, extensions, window, workspace} from 'vscode';
-import {EXT_ID, COMMAND} from './constants';
+import {EXT_ID, COMMAND, CASE} from './constants';
 import CommentHighlighter from './decorator/comment-highlighter';
 import ColorHighlighter from './decorator/color-highlighter';
 import NumberChanger from './feature/number-changer';
 import QuotesToggler from './feature/quotes-toggler';
+import CaseToggler from './feature/case-toggler';
 
 export async function activate(context: ExtensionContext) {
     const commentHighlight = new CommentHighlighter();
@@ -25,6 +26,54 @@ export async function activate(context: ExtensionContext) {
             colorHighlight.update(editor);
         }, 100);
     };
+
+    /* toggle case commands */
+    const caseToggler = new CaseToggler();
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE, () => {
+        caseToggler.proceed();
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_CAMEL, () => {
+        caseToggler.proceed(CASE.CAMEL);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_CONSTANT, () => {
+        caseToggler.proceed(CASE.CONSTANT);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_DOT, () => {
+        caseToggler.proceed(CASE.DOT);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_KEBAB, () => {
+        caseToggler.proceed(CASE.KEBAB);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_LOWER, () => {
+        caseToggler.proceed(CASE.LOWER);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_LOWER_FIRST, () => {
+        caseToggler.proceed(CASE.LOWER_FIRST);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_PASCAL, () => {
+        caseToggler.proceed(CASE.PASCAL);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_PATH, () => {
+        caseToggler.proceed(CASE.PATH);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_SENTENCE, () => {
+        caseToggler.proceed(CASE.SENTENCE);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_SNAKE, () => {
+        caseToggler.proceed(CASE.SNAKE);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_SWAP, () => {
+        caseToggler.proceed(CASE.SWAP);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_TITLE, () => {
+        caseToggler.proceed(CASE.TITLE);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_UPPER, () => {
+        caseToggler.proceed(CASE.UPPER);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_UPPER_FIRST, () => {
+        caseToggler.proceed(CASE.UPPER_FIRST);
+    }));
 
     /* toggle quotes command */
     const quotesToggler = new QuotesToggler();

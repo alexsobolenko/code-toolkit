@@ -22,4 +22,14 @@ export default abstract class Feature {
             window.showInformationMessage(message);
         }
     }
+
+    protected getLastLineLength(text: string): number {
+        const lines = text.split(/\r\n|\n/);
+
+        return lines[lines.length - 1].length;
+    }
+
+    protected uniq<T>(items: T[]): T[] {
+        return [...new Set(items)];
+    }
 }
