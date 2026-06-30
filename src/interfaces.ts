@@ -1,8 +1,59 @@
 import {DecorationOptions, Range, Selection, TextEditorDecorationType} from 'vscode';
-import type BracketPair from './features/toggle-multiline-expression/bracket-pair';
-import type {ExpressionKind, SkippedRangeType} from './types';
+import type {ExpressionKind, SkippedRangeType, StringProcessor} from './types';
 
-/* toggle quotes */
+export interface IParsedColor {
+    red: number;
+    green: number;
+    blue: number;
+    alpha: number;
+}
+
+export interface IColorMatch {
+    startOffset: number;
+    endOffset: number;
+    color: IParsedColor;
+}
+
+export interface IColorScanOptions {
+    hex: boolean;
+    rgb: boolean;
+    hsl: boolean;
+    cssNames: boolean;
+}
+
+export interface IColorDecoration {
+    decoration: TextEditorDecorationType;
+    ranges: DecorationOptions[];
+}
+
+export interface ICommentConfig {
+    lineComment?: string | string[];
+    blockComment?: [string, string];
+}
+
+export interface ICommentTag {
+    tag: string;
+    escapedTag: string;
+    decoration: TextEditorDecorationType;
+    ranges: DecorationOptions[];
+}
+
+export interface ILanguageState {
+    supported: boolean;
+    isPlainText: boolean;
+    ignoreFirstLine: boolean;
+    highlightSingleLine: boolean;
+    highlightJSDoc: boolean;
+    delimiter: string;
+    blockCommentStart: string;
+    blockCommentEnd: string;
+    expression: string;
+}
+
+export interface INumberChangeAction {
+    range: Range;
+    replacement: string;
+}
 export interface IQuotes {
     begin: string;
     end: string;
@@ -13,26 +64,48 @@ export interface IQuotesChange {
     selection: Selection;
 }
 
-/* toggle case */
+export interface IQuotesSelection {
+    line: number;
+    lineText: string;
+    start: number;
+    end: number;
+    quotes: IQuotes;
+}
+
+export interface ICaseTransformCommand {
+    label: string;
+    description: string;
+    transform: StringProcessor;
+}
+
+export interface IReplacementAction {
+    text: string;
+    range: Range;
+    replacement: string;
+    offset: number;
+    newRange: Range;
+}
+
 export interface ISelectedText {
     text: string | undefined;
     range: Range | undefined;
 }
 
-/* toggle multiline expression */
-export interface IBracketStackItem {
-    bracket: string;
-    offset: number;
+export interface IBracketPair {
+    open: string;
+    close: string;
+    startOffset: number;
+    endOffset: number;
 }
 
 export interface IExpressionMatch {
-    bracketPair: BracketPair;
+    bracketPair: IBracketPair;
     kind: ExpressionKind;
 }
 
-export interface IHeredocStart {
-    label: string;
-    bodyStartOffset: number;
+export interface IBracketStackItem {
+    bracket: string;
+    offset: number;
 }
 
 export interface IPreviousToken {
@@ -40,52 +113,13 @@ export interface IPreviousToken {
     startOffset: number;
 }
 
-export interface ITextScannerOptions {
+export interface IHeredocStart {
+    label: string;
+    bodyStartOffset: number;
+}
+
+export interface ITextScanOptions {
     languageId?: string;
     onLineComment?: (startOffset: number, endOffset: number) => boolean | void;
     onSkippedRange?: (startOffset: number, endOffset: number, type: SkippedRangeType) => boolean | void;
-}
-
-/* comment highlights */
-export interface CommentTag {
-    tag: string;
-    escapedTag: string;
-    decoration: any;
-    ranges: Array<any>;
-}
-
-export interface CommentConfig {
-    lineComment?: string;
-    blockComment?: [string, string];
-}
-
-/* color highlights */
-export interface IParsedColor {
-    red: number;
-    green: number;
-    blue: number;
-    alpha: number;
-}
-
-export interface IColorHighlightMatch {
-    startOffset: number;
-    endOffset: number;
-    color: IParsedColor;
-}
-
-export interface IColorHighlightDecoration {
-    decoration: TextEditorDecorationType;
-    ranges: DecorationOptions[];
-}
-
-export interface IColorFunctionParts {
-    channels: string[];
-    alpha?: string;
-}
-
-export interface IColorScannerOptions {
-    highlightHex: boolean;
-    highlightRgb: boolean;
-    highlightHsl: boolean;
-    highlightCssNames: boolean;
 }

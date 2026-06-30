@@ -1,107 +1,139 @@
-import {commands, ExtensionContext, extensions, window, workspace} from 'vscode';
-import App from './app';
-import {
-    C_LABEL_CAMEL,
-    C_LABEL_CONSTANT,
-    C_LABEL_DOT,
-    C_LABEL_KEBAB,
-    C_LABEL_LOWER,
-    C_LABEL_LOWER_FIRST,
-    C_LABEL_PASCAL,
-    C_LABEL_PATH,
-    C_LABEL_SENTENCE,
-    C_LABEL_SNAKE,
-    C_LABEL_SWAP,
-    C_LABEL_TITLE,
-    C_LABEL_UPPER,
-    C_LABEL_UPPER_FIRST,
-    CMD_DECREMENT_NUMBER,
-    CMD_INCREMENT_NUMBER,
-    CMD_TOGGLE_CASE,
-    CMD_TOGGLE_CASE_CAMEL,
-    CMD_TOGGLE_CASE_CONSTANT,
-    CMD_TOGGLE_CASE_DOT,
-    CMD_TOGGLE_CASE_KEBAB,
-    CMD_TOGGLE_CASE_LOWER,
-    CMD_TOGGLE_CASE_LOWER_FIRST,
-    CMD_TOGGLE_CASE_PASCAL,
-    CMD_TOGGLE_CASE_PATH,
-    CMD_TOGGLE_CASE_SENTENCE,
-    CMD_TOGGLE_CASE_SNAKE,
-    CMD_TOGGLE_CASE_SWAP,
-    CMD_TOGGLE_CASE_TITLE,
-    CMD_TOGGLE_CASE_UPPER,
-    CMD_TOGGLE_CASE_UPPER_FIRST,
-    CMD_TOGGLE_MULTILINE_EXPRESSION,
-    CMD_TOGGLE_QUOTES,
-} from './constants';
+import {ExtensionContext, commands, extensions, window, workspace} from 'vscode';
+import {EXT_ID, COMMAND, CASE} from './constants';
+import CommentHighlighter from './decorator/comment-highlighter';
+import ColorHighlighter from './decorator/color-highlighter';
+import NumberChanger from './feature/number-changer';
+import QuotesToggler from './feature/quotes-toggler';
+import CaseToggler from './feature/case-toggler';
+import MultilineExpressionToggler from './feature/multiline-expression-toggler';
 
 export async function activate(context: ExtensionContext) {
-    /* toggle quotes */
-    context.subscriptions.push(commands.registerCommand(CMD_TOGGLE_QUOTES, () => {
-        App.instance.toggleQuotes();
+    const commentHighlight = new CommentHighlighter();
+    const colorHighlight = new ColorHighlighter();
+    context.subscriptions.push(commentHighlight, colorHighlight);
+
+    /* debounced decoration update */
+    let updateTimeout: NodeJS.Timeout | undefined;
+    const scheduleUpdate = () => {
+        if (updateTimeout) {
+            clearTimeout(updateTimeout);
+        }
+        updateTimeout = setTimeout(() => {
+            const editor = window.activeTextEditor;
+            if (!editor) {
+                return;
+            }
+            commentHighlight.update(editor);
+            colorHighlight.update(editor);
+        }, 100);
+    };
+
+    /* toggle case commands */
+    const caseToggler = new CaseToggler();
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE, () => {
+        caseToggler.proceed();
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_CAMEL, () => {
+        caseToggler.proceed(CASE.CAMEL);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_CONSTANT, () => {
+        caseToggler.proceed(CASE.CONSTANT);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_DOT, () => {
+        caseToggler.proceed(CASE.DOT);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_KEBAB, () => {
+        caseToggler.proceed(CASE.KEBAB);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_LOWER, () => {
+        caseToggler.proceed(CASE.LOWER);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_LOWER_FIRST, () => {
+        caseToggler.proceed(CASE.LOWER_FIRST);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_PASCAL, () => {
+        caseToggler.proceed(CASE.PASCAL);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_PATH, () => {
+        caseToggler.proceed(CASE.PATH);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_SENTENCE, () => {
+        caseToggler.proceed(CASE.SENTENCE);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_SNAKE, () => {
+        caseToggler.proceed(CASE.SNAKE);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_SWAP, () => {
+        caseToggler.proceed(CASE.SWAP);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_TITLE, () => {
+        caseToggler.proceed(CASE.TITLE);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_UPPER, () => {
+        caseToggler.proceed(CASE.UPPER);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_CASE_UPPER_FIRST, () => {
+        caseToggler.proceed(CASE.UPPER_FIRST);
     }));
 
-    /* toggle case */
-    const toggleCaseCommands: Array<{command: string, label: string | null}> = [
-        {command: CMD_TOGGLE_CASE, label: null},
-        {command: CMD_TOGGLE_CASE_CAMEL, label: C_LABEL_CAMEL},
-        {command: CMD_TOGGLE_CASE_CONSTANT, label: C_LABEL_CONSTANT},
-        {command: CMD_TOGGLE_CASE_DOT, label: C_LABEL_DOT},
-        {command: CMD_TOGGLE_CASE_KEBAB, label: C_LABEL_KEBAB},
-        {command: CMD_TOGGLE_CASE_LOWER, label: C_LABEL_LOWER},
-        {command: CMD_TOGGLE_CASE_LOWER_FIRST, label: C_LABEL_LOWER_FIRST},
-        {command: CMD_TOGGLE_CASE_PASCAL, label: C_LABEL_PASCAL},
-        {command: CMD_TOGGLE_CASE_PATH, label: C_LABEL_PATH},
-        {command: CMD_TOGGLE_CASE_SENTENCE, label: C_LABEL_SENTENCE},
-        {command: CMD_TOGGLE_CASE_SNAKE, label: C_LABEL_SNAKE},
-        {command: CMD_TOGGLE_CASE_SWAP, label: C_LABEL_SWAP},
-        {command: CMD_TOGGLE_CASE_TITLE, label: C_LABEL_TITLE},
-        {command: CMD_TOGGLE_CASE_UPPER, label: C_LABEL_UPPER},
-        {command: CMD_TOGGLE_CASE_UPPER_FIRST, label: C_LABEL_UPPER_FIRST},
-    ];
-    toggleCaseCommands.forEach((item) => {
-        context.subscriptions.push(commands.registerCommand(item.command, () => {
-            App.instance.toggleCase(item.label);
-        }));
-    });
-
-    /* toggle multiline expression */
-    context.subscriptions.push(commands.registerCommand(CMD_TOGGLE_MULTILINE_EXPRESSION, () => {
-        App.instance.toggleMultilineExpression();
+    /* toggle quotes command */
+    const quotesToggler = new QuotesToggler();
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_QUOTES, () => {
+        quotesToggler.proceed();
     }));
 
-    /* change numbers */
-    context.subscriptions.push(commands.registerCommand(CMD_INCREMENT_NUMBER, () => {
-        App.instance.changeNumber(true);
-    }));
-    context.subscriptions.push(commands.registerCommand(CMD_DECREMENT_NUMBER, () => {
-        App.instance.changeNumber(false);
+    /* toggle multiline expression command */
+    const multilineExpressionToggler = new MultilineExpressionToggler();
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_MULTILINE_EXPRESSION, () => {
+        multilineExpressionToggler.proceed();
     }));
 
-    /* provider (comment highlights, color highlights) */
-    App.instance.provider.triggerUpdateDecorations();
-    await App.instance.commentHighlightsParser.setRegex(App.instance.editor.document.languageId);
+    /* increment and decrement number commands */
+    const numberChanger = new NumberChanger();
+    context.subscriptions.push(commands.registerCommand(COMMAND.INCREMENT_NUMBER, () => {
+        numberChanger.proceed(true);
+    }));
+    context.subscriptions.push(commands.registerCommand(COMMAND.DECREMENT_NUMBER, () => {
+        numberChanger.proceed(false);
+    }));
+
+    /* initial decoration */
+    const editor = window.activeTextEditor;
+    if (editor) {
+        await commentHighlight.setLanguage(editor.document.languageId);
+        scheduleUpdate();
+    }
+
+    /* reload language configs when extensions change */
     extensions.onDidChange(() => {
-        App.instance.commentHighlightsParser.config.updateLanguagesDefinitions();
+        commentHighlight.reloadLanguageDefinitions();
     }, null, context.subscriptions);
+
+    /* re-detect language and update decorations on editor switch */
     window.onDidChangeActiveTextEditor(async (editor) => {
         if (editor) {
-            await App.instance.commentHighlightsParser.setRegex(App.instance.editor.document.languageId);
-            App.instance.provider.triggerUpdateDecorations();
+            await commentHighlight.setLanguage(editor.document.languageId);
+            scheduleUpdate();
         }
     }, null, context.subscriptions);
+
+    /* update decorations on text change */
     workspace.onDidChangeTextDocument((event) => {
-        if (event.document === App.instance.editor.document) {
-            App.instance.provider.triggerUpdateDecorations();
+        const editor = window.activeTextEditor;
+        if (editor && event.document === editor.document) {
+            scheduleUpdate();
         }
     }, null, context.subscriptions);
+
+    /* reset decorations on configuration change */
     workspace.onDidChangeConfiguration((event) => {
-        App.instance.refreshConfig();
-        if (event.affectsConfiguration('advanced-code-toolkit.color-highlight')) {
-            App.instance.colorHighlightsParser.refreshDecorations();
-            App.instance.provider.triggerUpdateDecorations();
+        if (event.affectsConfiguration(`${EXT_ID}.comment-highlight`)) {
+            commentHighlight.refreshTags();
         }
+        if (event.affectsConfiguration(`${EXT_ID}.color-highlight`)) {
+            colorHighlight.resetDecorations();
+        }
+        scheduleUpdate();
     }, null, context.subscriptions);
 }
 

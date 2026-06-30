@@ -185,7 +185,7 @@ export function installVscodeMock(options: IVscodeMockOptions = {}): () => void 
         Uri: {
             file: (path: string) => ({fsPath: path}),
         },
-        window: {
+        window: Object.defineProperties({
             activeTextEditor: {},
             createTextEditorDecorationType: (style: unknown) => ({
                 style,
@@ -199,8 +199,7 @@ export function installVscodeMock(options: IVscodeMockOptions = {}): () => void 
             showWarningMessage: () => undefined,
             onDidChangeActiveTextEditor: () => ({dispose: () => undefined}),
             showQuickPick: () => Promise.resolve(undefined),
-            ...options.window,
-        },
+        }, Object.getOwnPropertyDescriptors(options.window ?? {})),
         workspace: {
             fs: {
                 readFile: async () => new Uint8Array(),
@@ -225,9 +224,4 @@ export function installVscodeMock(options: IVscodeMockOptions = {}): () => void 
     return () => {
         moduleWithLoad._load = originalLoad;
     };
-}
-
-export function setAppInstance(instance: unknown): void {
-    const {default: App} = require('../../app');
-    App._instance = instance;
 }

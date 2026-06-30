@@ -2,7 +2,7 @@
     "name": "advanced-code-toolkit",
     "displayName": "Advanced code toolkit",
     "description": "A Visual Studio Code toolkit focused on simplifying everyday development workflows.",
-    "version": "0.2.0",
+    "version": "1.0.0",
     "license": "MIT",
     "author": {
         "name": "Alexey Sobolenko",
@@ -37,59 +37,59 @@
                 "title": "Advanced code toolkit. Toggle case"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-camel",
+                "command": "advanced-code-toolkit.toggle-case.camel",
                 "title": "Advanced code toolkit. Toggle case 'camel'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-constant",
+                "command": "advanced-code-toolkit.toggle-case.constant",
                 "title": "Advanced code toolkit. Toggle case 'constant'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-dot",
+                "command": "advanced-code-toolkit.toggle-case.dot",
                 "title": "Advanced code toolkit. Toggle case 'dot'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-kebab",
+                "command": "advanced-code-toolkit.toggle-case.kebab",
                 "title": "Advanced code toolkit. Toggle case 'kebab'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-lower",
+                "command": "advanced-code-toolkit.toggle-case.lower",
                 "title": "Advanced code toolkit. Toggle case 'lower'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-lower-first",
+                "command": "advanced-code-toolkit.toggle-case.lower-first",
                 "title": "Advanced code toolkit. Toggle case 'lowerFirst'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-pascal",
+                "command": "advanced-code-toolkit.toggle-case.pascal",
                 "title": "Advanced code toolkit. Toggle case 'pascal'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-path",
+                "command": "advanced-code-toolkit.toggle-case.path",
                 "title": "Advanced code toolkit. Toggle case 'path'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-sentence",
+                "command": "advanced-code-toolkit.toggle-case.sentence",
                 "title": "Advanced code toolkit. Toggle case 'sentence'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-snake",
+                "command": "advanced-code-toolkit.toggle-case.snake",
                 "title": "Advanced code toolkit. Toggle case 'snake'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-swap",
+                "command": "advanced-code-toolkit.toggle-case.swap",
                 "title": "Advanced code toolkit. Toggle case 'swap'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-title",
+                "command": "advanced-code-toolkit.toggle-case.title",
                 "title": "Advanced code toolkit. Toggle case 'title'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-upper",
+                "command": "advanced-code-toolkit.toggle-case.upper",
                 "title": "Advanced code toolkit. Toggle case 'upper'"
             },
             {
-                "command": "advanced-code-toolkit.toggle-case-upper-first",
+                "command": "advanced-code-toolkit.toggle-case.upper-first",
                 "title": "Advanced code toolkit. Toggle case 'upperFirst'"
             },
             {
@@ -130,18 +130,10 @@
             "properties": {
                 "advanced-code-toolkit.toggle-quotes.quotes-order": {
                     "type": "array",
-                    "default": [
-                        "'",
-                        "\"",
-                        "`"
-                    ],
+                    "default": ["'", "\"", "`"],
                     "items": {
                         "type": "string",
-                        "enum": [
-                            "'",
-                            "\"",
-                            "`"
-                        ]
+                        "enum": ["'", "\"", "`"]
                     },
                     "minItems": 2,
                     "uniqueItems": true,
@@ -162,7 +154,7 @@
                     "default": true,
                     "description": "Add trailing comma when expanding objects, if the current language supports it."
                 },
-                "advanced-code-toolkit.comment-tags": {
+                "advanced-code-toolkit.comment-highlight.tags": {
                     "type": "array",
                     "default": [
                         {
@@ -248,12 +240,12 @@
                     },
                     "description": "Comment marker styles for the comment highlights feature."
                 },
-                "advanced-code-toolkit.comment-highlight-plain-text": {
+                "advanced-code-toolkit.comment-highlight.plain-text": {
                     "type": "boolean",
                     "default": true,
                     "description": "Highlight comment markers in plain text files."
                 },
-                "advanced-code-toolkit.comment-highlight-multiline": {
+                "advanced-code-toolkit.comment-highlight.multiline": {
                     "type": "boolean",
                     "default": true,
                     "description": "Highlight comment markers inside block comments."
