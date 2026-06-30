@@ -17,7 +17,10 @@ Object.defineProperty(mockWindowOverrides, 'activeTextEditor', {
 const restoreVscodeMock = installVscodeMock({window: mockWindowOverrides});
 const {default: QuotesToggler} = require('../../feature/quotes-toggler');
 
-function setup(text: string, selections: Selection[]): {toggler: any; editBuilder: EditRecorder; document: FakeDocument} {
+function setup(
+    text: string,
+    selections: Selection[],
+): {toggler: any; editBuilder: EditRecorder; document: FakeDocument} {
     const document = new FakeDocument(text);
     const editBuilder = new EditRecorder();
     const toggler = new QuotesToggler();

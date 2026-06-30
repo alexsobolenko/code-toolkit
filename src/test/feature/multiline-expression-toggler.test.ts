@@ -129,8 +129,13 @@ describe('MultilineExpressionToggler', () => {
     });
 
     it('expands a PHP method signature and merges the next-line opening brace', () => {
-        const text = '    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void\n    {\n    }';
-        const {toggler, editBuilder, document} = setup(text, 'php', text.indexOf('PasswordAuthenticatedUserInterface'));
+        const text = '    public function upgradePassword('
+            + 'PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void\n    {\n    }';
+        const {toggler, editBuilder, document} = setup(
+            text,
+            'php',
+            text.indexOf('PasswordAuthenticatedUserInterface'),
+        );
 
         toggler.proceed();
 
@@ -146,8 +151,13 @@ describe('MultilineExpressionToggler', () => {
     });
 
     it('collapses an already-expanded PHP method signature and pushes the opening brace back to a new line', () => {
-        const text = '    public function upgradePassword(\n        PasswordAuthenticatedUserInterface $user,\n        string $newHashedPassword\n    ): void {\n    }';
-        const {toggler, editBuilder, document} = setup(text, 'php', text.indexOf('PasswordAuthenticatedUserInterface'));
+        const text = '    public function upgradePassword(\n        PasswordAuthenticatedUserInterface $user,\n'
+            + '        string $newHashedPassword\n    ): void {\n    }';
+        const {toggler, editBuilder, document} = setup(
+            text,
+            'php',
+            text.indexOf('PasswordAuthenticatedUserInterface'),
+        );
 
         toggler.proceed();
 

@@ -17,7 +17,10 @@ Object.defineProperty(mockWindowOverrides, 'activeTextEditor', {
 const restoreVscodeMock = installVscodeMock({window: mockWindowOverrides});
 const {default: NumberChanger} = require('../../feature/number-changer');
 
-function setup(text: string, selections: Selection[]): {changer: any; editBuilder: EditRecorder; document: FakeDocument} {
+function setup(
+    text: string,
+    selections: Selection[],
+): {changer: any; editBuilder: EditRecorder; document: FakeDocument} {
     const document = new FakeDocument(text);
     const editBuilder = new EditRecorder();
     const changer = new NumberChanger();

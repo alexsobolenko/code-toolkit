@@ -28,6 +28,7 @@ function setup(text: string, selections: Selection[]): {toggler: any; editBuilde
         selections,
         edit: (callback: (edit: EditRecorder) => void) => {
             callback(editBuilder);
+            
             return Promise.resolve(true);
         },
     };

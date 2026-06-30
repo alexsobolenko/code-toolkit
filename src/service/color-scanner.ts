@@ -92,6 +92,7 @@ export default class ColorScanner {
             if (a.startOffset !== b.startOffset) {
                 return a.startOffset - b.startOffset;
             }
+            
             return b.endOffset - a.endOffset;
         });
 
@@ -125,6 +126,7 @@ export default class ColorScanner {
 
         if (value.length === 6 || value.length === 8) {
             const alpha = value.length === 8 ? parseInt(value.slice(6, 8), 16) / 255 : 1;
+            
             return this.createColor(
                 parseInt(value.slice(0, 2), 16),
                 parseInt(value.slice(2, 4), 16),
@@ -168,6 +170,7 @@ export default class ColorScanner {
         }
 
         const rgb = this.hslToRgb(hue, saturation / 100, lightness / 100);
+        
         return this.createColor(rgb.red, rgb.green, rgb.blue, alpha);
     }
 
@@ -182,6 +185,7 @@ export default class ColorScanner {
             if ((parts.length !== 3 && parts.length !== 4) || parts.some((s) => s === '')) {
                 return undefined;
             }
+            
             return {channels: parts.slice(0, 3), alpha: parts[3]};
         }
 
@@ -201,6 +205,7 @@ export default class ColorScanner {
     private parseRgbChannel(input: string): number | undefined {
         if (input.endsWith('%')) {
             const percent = this.parsePercent(input);
+            
             return percent === undefined ? undefined : Math.round(255 * percent / 100);
         }
 
@@ -215,6 +220,7 @@ export default class ColorScanner {
     private parseAlpha(input: string): number | undefined {
         if (input.endsWith('%')) {
             const percent = this.parsePercent(input);
+            
             return percent === undefined ? undefined : percent / 100;
         }
 
@@ -267,7 +273,7 @@ export default class ColorScanner {
         const x = chroma * (1 - Math.abs(huePrime % 2 - 1));
         const m = lightness - chroma / 2;
 
-        let r: number, g: number, b: number;
+        let r: number; let g: number; let b: number;
         if (huePrime < 1) {
             [r, g, b] = [chroma, x, 0];
         } else if (huePrime < 2) {

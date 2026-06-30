@@ -14,6 +14,7 @@ export default class QuotesToggler extends Feature {
         for (const configuredQuote of configuredQuotes) {
             if (typeof configuredQuote !== 'string') {
                 this.showMessage('Wrong chars array quotes pair format', MESSAGE.ERROR);
+                
                 return;
             }
 
@@ -23,6 +24,7 @@ export default class QuotesToggler extends Feature {
                 const match = configuredQuote.match(/^(.),(.)$/);
                 if (!match) {
                     this.showMessage('Wrong chars array quotes pair format', MESSAGE.ERROR);
+                    
                     return;
                 }
 
@@ -32,6 +34,7 @@ export default class QuotesToggler extends Feature {
 
         if (quotesOrder.length < 2) {
             this.showMessage('Wrong chars array quotes pair format', MESSAGE.ERROR);
+            
             return;
         }
 

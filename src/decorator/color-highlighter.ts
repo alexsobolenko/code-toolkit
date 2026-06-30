@@ -83,6 +83,7 @@ export default class ColorHighlighter extends Feature implements Disposable {
             ranges: [],
         };
         this.decorations.set(key, item);
+        
         return item;
     }
 
@@ -124,9 +125,11 @@ export default class ColorHighlighter extends Feature implements Disposable {
     private getReadableTextColor(color: IParsedColor): string {
         const toLinear = (v: number) => {
             const c = v / 255;
+            
             return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
         };
         const luminance = 0.2126 * toLinear(color.red) + 0.7152 * toLinear(color.green) + 0.0722 * toLinear(color.blue);
+        
         return luminance > 0.5 ? '#000000' : '#FFFFFF';
     }
 

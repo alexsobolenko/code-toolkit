@@ -39,7 +39,8 @@ export default class CaseToggler extends Feature {
         },
         {
             label: CASE.PASCAL,
-            description: 'Convert to a string denoted in the same fashion as camelCase, but with the first letter capitalised',
+            description: 'Convert to a string denoted in the same fashion as camelCase, '
+                + 'but with the first letter capitalised',
             transform: this.toPascal,
         },
         {

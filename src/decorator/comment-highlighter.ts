@@ -236,9 +236,11 @@ export default class CommentHighlighter extends Feature implements Disposable {
             const content = new TextDecoder().decode(rawContent);
             const config = json5.parse(content);
             this.commentConfigs.set(languageId, config.comments);
+            
             return config.comments;
         } catch {
             this.commentConfigs.set(languageId, undefined);
+            
             return undefined;
         }
     }
@@ -309,5 +311,4 @@ export default class CommentHighlighter extends Feature implements Disposable {
     private escapeRegExp(input: string): string {
         return input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
-
 }
