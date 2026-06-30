@@ -16,6 +16,8 @@ import Feature from '../feature';
 
 export default class CommentHighlighter extends Feature implements Disposable {
     private tags: ICommentTag[] = [];
+    private escapedTagsPattern = '';
+    private highlightMultiline = true;
     private languageConfigFiles = new Map<string, string>();
     private commentConfigs = new Map<string, ICommentConfig | undefined>();
     private language: ILanguageState | null = null;
@@ -23,6 +25,7 @@ export default class CommentHighlighter extends Feature implements Disposable {
     constructor() {
         super();
         this.loadLanguageDefinitions();
+        this.highlightMultiline = this.getConfig(CONFIG.COMMENT_HIGHLIGHT.MULTILINE, true);
     }
 
     async setLanguage(languageId: string): Promise<void> {
@@ -53,6 +56,7 @@ export default class CommentHighlighter extends Feature implements Disposable {
     refreshTags(): void {
         this.disposeTags();
         this.initTags();
+        this.highlightMultiline = this.getConfig(CONFIG.COMMENT_HIGHLIGHT.MULTILINE, true);
     }
 
     reloadLanguageDefinitions(): void {
@@ -93,14 +97,13 @@ export default class CommentHighlighter extends Feature implements Disposable {
 
     private findBlockComments(editor: TextEditor): void {
         const lang = this.language!;
-        if (!this.getConfig(CONFIG.COMMENT_HIGHLIGHT.MULTILINE, true) || !lang.blockCommentStart) {
+        if (!this.highlightMultiline || !lang.blockCommentStart) {
             return;
         }
 
         const {document} = editor;
         const text = document.getText();
-        const escapedTags = this.tags.map((t) => t.escapedTag).join('|');
-        const commentMatchStr = `(^)+([ \\t]*[ \\t]*)(${escapedTags})([ ]*|[:])+([^*/][^\\r\\n]*)`;
+        const commentMatchStr = `(^)+([ \\t]*[ \\t]*)(${this.escapedTagsPattern})([ ]*|[:])+([^*/][^\\r\\n]*)`;
         const blockStr = `(^|[ \\t])(${lang.blockCommentStart}[\\s])+([\\s\\S]*?)(${lang.blockCommentEnd})`;
         const blockRegEx = new RegExp(blockStr, 'gm');
         const lineRegEx = new RegExp(commentMatchStr, 'igm');
@@ -122,16 +125,14 @@ export default class CommentHighlighter extends Feature implements Disposable {
 
     private findJSDocComments(editor: TextEditor): void {
         const lang = this.language!;
-        const highlightMultiline = this.getConfig(CONFIG.COMMENT_HIGHLIGHT.MULTILINE, true);
-        if (!highlightMultiline && !lang.highlightJSDoc) {
+        if (!this.highlightMultiline && !lang.highlightJSDoc) {
             return;
         }
 
         const {document} = editor;
         const text = document.getText();
-        const escapedTags = this.tags.map((t) => t.escapedTag).join('|');
         const jsDocRegEx = /(^|[ \t])(\/\*\*)+([\s\S]*?)(\*\/)/gm;
-        const commentMatchStr = `(^)+([ \\t]*\\*[ \\t]*)(${escapedTags})([ ]*|[:])+([^*/][^\\r\\n]*)`;
+        const commentMatchStr = `(^)+([ \\t]*\\*[ \\t]*)(${this.escapedTagsPattern})([ ]*|[:])+([^*/][^\\r\\n]*)`;
         const lineRegEx = new RegExp(commentMatchStr, 'igm');
 
         let blockMatch: RegExpExecArray | null;
@@ -190,10 +191,9 @@ export default class CommentHighlighter extends Feature implements Disposable {
         }
 
         if (state.supported && this.tags.length > 0) {
-            const escapedTags = this.tags.map((t) => t.escapedTag).join('|');
             state.expression = (state.isPlainText && this.getConfig(CONFIG.COMMENT_HIGHLIGHT.PLAIN_TEXT, true))
-                ? `(^)+([ \\t]*[ \\t]*)(${escapedTags})+(.*)`
-                : `(${state.delimiter})+( |\t)*(${escapedTags})+(.*)`;
+                ? `(^)+([ \\t]*[ \\t]*)(${this.escapedTagsPattern})+(.*)`
+                : `(${state.delimiter})+( |\t)*(${this.escapedTagsPattern})+(.*)`;
         }
 
         return state;
@@ -294,6 +294,8 @@ export default class CommentHighlighter extends Feature implements Disposable {
                 decoration: window.createTextEditorDecorationType(options),
             });
         }
+
+        this.escapedTagsPattern = this.tags.map((t) => t.escapedTag).join('|');
     }
 
     private disposeTags(): void {
@@ -301,6 +303,7 @@ export default class CommentHighlighter extends Feature implements Disposable {
             tag.decoration.dispose();
         }
         this.tags = [];
+        this.escapedTagsPattern = '';
     }
 
     private escapeRegExp(input: string): string {

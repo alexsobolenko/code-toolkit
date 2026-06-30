@@ -7,7 +7,7 @@ import {
     window,
 } from 'vscode';
 import {CONFIG} from '../constants';
-import {IColorDecoration, IParsedColor} from '../interfaces';
+import {IColorDecoration, IColorScanOptions, IParsedColor} from '../interfaces';
 import type {ColorHighlightMode} from '../types';
 import Feature from '../feature';
 import ColorScanner from '../service/color-scanner';
@@ -15,20 +15,23 @@ import ColorScanner from '../service/color-scanner';
 export default class ColorHighlighter extends Feature implements Disposable {
     private readonly decorations = new Map<string, IColorDecoration>();
     private readonly scanner = new ColorScanner();
+    private enabled = true;
+    private mode: ColorHighlightMode = 'background';
+    private scanOptions: IColorScanOptions = {hex: true, rgb: true, hsl: true, cssNames: true};
+
+    constructor() {
+        super();
+        this.refreshConfig();
+    }
 
     update(editor: TextEditor): void {
-        if (!this.isEnabled()) {
+        if (!this.enabled) {
             return;
         }
 
         const {document} = editor;
         const text = document.getText();
-        const matches = this.scanner.scan(text, {
-            hex: this.getConfig(CONFIG.COLOR_HIGHLIGHT.HEX, true),
-            rgb: this.getConfig(CONFIG.COLOR_HIGHLIGHT.RGB, true),
-            hsl: this.getConfig(CONFIG.COLOR_HIGHLIGHT.HSL, true),
-            cssNames: this.getConfig(CONFIG.COLOR_HIGHLIGHT.CSS_NAMES, true),
-        });
+        const matches = this.scanner.scan(text, this.scanOptions);
 
         for (const match of matches) {
             const startPos = document.positionAt(match.startOffset);
@@ -48,22 +51,24 @@ export default class ColorHighlighter extends Feature implements Disposable {
             item.decoration.dispose();
         }
         this.decorations.clear();
+        this.refreshConfig();
     }
 
     dispose(): void {
         this.resetDecorations();
     }
 
-    private isEnabled(): boolean {
-        return this.getConfig(CONFIG.COLOR_HIGHLIGHT.ENABLED, true);
-    }
+    private refreshConfig(): void {
+        this.enabled = this.getConfig(CONFIG.COLOR_HIGHLIGHT.ENABLED, true);
+        this.scanOptions = {
+            hex: this.getConfig(CONFIG.COLOR_HIGHLIGHT.HEX, true),
+            rgb: this.getConfig(CONFIG.COLOR_HIGHLIGHT.RGB, true),
+            hsl: this.getConfig(CONFIG.COLOR_HIGHLIGHT.HSL, true),
+            cssNames: this.getConfig(CONFIG.COLOR_HIGHLIGHT.CSS_NAMES, true),
+        };
 
-    private getMode(): ColorHighlightMode {
         const mode = this.getConfig<string>(CONFIG.COLOR_HIGHLIGHT.MODE, 'background');
-        if (mode === 'background' || mode === 'border' || mode === 'dot') {
-            return mode;
-        }
-        return 'background';
+        this.mode = (mode === 'background' || mode === 'border' || mode === 'dot') ? mode : 'background';
     }
 
     private getOrCreateDecoration(color: IParsedColor): IColorDecoration {
@@ -87,7 +92,7 @@ export default class ColorHighlighter extends Feature implements Disposable {
         };
         const cssColor = `rgba(${color.red}, ${color.green}, ${color.blue}, ${this.alphaStr(color.alpha)})`;
 
-        switch (this.getMode()) {
+        switch (this.mode) {
             case 'border':
                 options.border = `1px solid ${cssColor}`;
                 options.borderRadius = '2px';
