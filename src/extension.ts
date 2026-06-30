@@ -5,6 +5,7 @@ import ColorHighlighter from './decorator/color-highlighter';
 import NumberChanger from './feature/number-changer';
 import QuotesToggler from './feature/quotes-toggler';
 import CaseToggler from './feature/case-toggler';
+import MultilineExpressionToggler from './feature/multiline-expression-toggler';
 
 export async function activate(context: ExtensionContext) {
     const commentHighlight = new CommentHighlighter();
@@ -79,6 +80,12 @@ export async function activate(context: ExtensionContext) {
     const quotesToggler = new QuotesToggler();
     context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_QUOTES, () => {
         quotesToggler.proceed();
+    }));
+
+    /* toggle multiline expression command */
+    const multilineExpressionToggler = new MultilineExpressionToggler();
+    context.subscriptions.push(commands.registerCommand(COMMAND.TOGGLE_MULTILINE_EXPRESSION, () => {
+        multilineExpressionToggler.proceed();
     }));
 
     /* increment and decrement number commands */

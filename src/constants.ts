@@ -403,3 +403,7 @@ export const CASE = {
     UPPER: 'upper',
     UPPER_FIRST: 'upperFirst',
 };
+
+export const MULTILINE_SIGNATURE_OPENING_BRACE_REGEX = /^[ \t]*(:[^\r\n{]+)?\r?\n[ \t]*\{/;
+export const MULTILINE_NEXT_LINE_OPENING_BRACE_REGEX = /\r?\n[ \t]*\{$/;
+export const MULTILINE_SAME_LINE_OPENING_BRACE_REGEX = /^[ \t]*(:[^\r\n{]+)?[ \t]*\{/;

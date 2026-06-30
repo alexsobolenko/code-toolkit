@@ -1,5 +1,5 @@
 import {DecorationOptions, Range, Selection, TextEditorDecorationType} from 'vscode';
-import type {StringProcessor} from './types';
+import type {ExpressionKind, SkippedRangeType, StringProcessor} from './types';
 
 export interface IParsedColor {
     red: number;
@@ -89,4 +89,37 @@ export interface IReplacementAction {
 export interface ISelectedText {
     text: string | undefined;
     range: Range | undefined;
+}
+
+export interface IBracketPair {
+    open: string;
+    close: string;
+    startOffset: number;
+    endOffset: number;
+}
+
+export interface IExpressionMatch {
+    bracketPair: IBracketPair;
+    kind: ExpressionKind;
+}
+
+export interface IBracketStackItem {
+    bracket: string;
+    offset: number;
+}
+
+export interface IPreviousToken {
+    value: string;
+    startOffset: number;
+}
+
+export interface IHeredocStart {
+    label: string;
+    bodyStartOffset: number;
+}
+
+export interface ITextScanOptions {
+    languageId?: string;
+    onLineComment?: (startOffset: number, endOffset: number) => boolean | void;
+    onSkippedRange?: (startOffset: number, endOffset: number, type: SkippedRangeType) => boolean | void;
 }
