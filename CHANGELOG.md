@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.0.0] - 2026-06-30
+
+- Rewrote the extension's internal architecture for better maintainability (no intended functional changes)
+- Added test coverage for all features
+
 ## [0.2.0] - 2026-05-26
 
 - Added automated tests for extension features
