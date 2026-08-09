@@ -30,13 +30,19 @@ export default class ColorHighlighter extends Feature implements Disposable {
         }
 
         const {document} = editor;
-        const text = document.getText();
+        const scanRange = this.getVisibleScanRange(document, editor.visibleRanges);
+        if (!scanRange) {
+            return;
+        }
+
+        const baseOffset = document.offsetAt(scanRange.start);
+        const text = document.getText(scanRange);
         const matches = this.scanner.scan(text, this.scanOptions);
         const usedKeys = new Set<string>();
 
         for (const match of matches) {
-            const startPos = document.positionAt(match.startOffset);
-            const endPos = document.positionAt(match.endOffset);
+            const startPos = document.positionAt(baseOffset + match.startOffset);
+            const endPos = document.positionAt(baseOffset + match.endOffset);
             const item = this.getOrCreateDecoration(match.color);
             usedKeys.add(this.getColorKey(match.color));
             item.ranges.push({range: new Range(startPos, endPos)});

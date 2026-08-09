@@ -128,6 +128,12 @@
         "configuration": {
             "title": "Advanced code toolkit",
             "properties": {
+                "advanced-code-toolkit.highlight.visible-range-padding-lines": {
+                    "type": "integer",
+                    "default": 500,
+                    "minimum": 0,
+                    "description": "Number of extra lines scanned above and below the visible editor area for comment and color highlights."
+                },
                 "advanced-code-toolkit.toggle-quotes.quotes-order": {
                     "type": "array",
                     "default": ["'", "\"", "`"],

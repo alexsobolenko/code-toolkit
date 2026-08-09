@@ -125,6 +125,13 @@ export async function activate(context: ExtensionContext) {
         }
     }, null, context.subscriptions);
 
+    /* recompute decorations for newly visible lines after scrolling */
+    window.onDidChangeTextEditorVisibleRanges((event) => {
+        if (event.textEditor === window.activeTextEditor) {
+            scheduleUpdate();
+        }
+    }, null, context.subscriptions);
+
     /* reset decorations on configuration change */
     workspace.onDidChangeConfiguration((event) => {
         if (event.affectsConfiguration(`${EXT_ID}.comment-highlight`)) {

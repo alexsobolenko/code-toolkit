@@ -42,9 +42,12 @@ export default class CommentHighlighter extends Feature implements Disposable {
         }
 
         if (this.language.supported && this.language.expression) {
-            this.findSingleLineComments(editor);
-            this.findBlockComments(editor);
-            this.findJSDocComments(editor);
+            const scanRange = this.getVisibleScanRange(editor.document, editor.visibleRanges);
+            if (scanRange) {
+                this.findSingleLineComments(editor, scanRange);
+                this.findBlockComments(editor, scanRange);
+                this.findJSDocComments(editor, scanRange);
+            }
         }
 
         for (const tag of this.tags) {
@@ -68,21 +71,22 @@ export default class CommentHighlighter extends Feature implements Disposable {
         this.disposeTags();
     }
 
-    private findSingleLineComments(editor: TextEditor): void {
+    private findSingleLineComments(editor: TextEditor, scanRange: Range): void {
         const lang = this.language!;
         if (!lang.highlightSingleLine || !lang.expression) {
             return;
         }
 
         const {document} = editor;
-        const text = document.getText();
+        const baseOffset = document.offsetAt(scanRange.start);
+        const text = document.getText(scanRange);
         const flags = lang.isPlainText ? 'igm' : 'ig';
         const regEx = new RegExp(lang.expression, flags);
         let match: RegExpExecArray | null;
 
         while (match = regEx.exec(text)) {
-            const startPos = document.positionAt(match.index);
-            const endPos = document.positionAt(match.index + match[0].length);
+            const startPos = document.positionAt(baseOffset + match.index);
+            const endPos = document.positionAt(baseOffset + match.index + match[0].length);
 
             if (lang.ignoreFirstLine && startPos.line === 0 && startPos.character === 0) {
                 continue;
@@ -95,14 +99,15 @@ export default class CommentHighlighter extends Feature implements Disposable {
         }
     }
 
-    private findBlockComments(editor: TextEditor): void {
+    private findBlockComments(editor: TextEditor, scanRange: Range): void {
         const lang = this.language!;
         if (!this.highlightMultiline || !lang.blockCommentStart) {
             return;
         }
 
         const {document} = editor;
-        const text = document.getText();
+        const baseOffset = document.offsetAt(scanRange.start);
+        const text = document.getText(scanRange);
         const commentMatchStr = `(^)+([ \\t]*[ \\t]*)(${this.escapedTagsPattern})([ ]*|[:])+([^*/][^\\r\\n]*)`;
         const blockStr = `(^|[ \\t])(${lang.blockCommentStart}[\\s])+([\\s\\S]*?)(${lang.blockCommentEnd})`;
         const blockRegEx = new RegExp(blockStr, 'gm');
@@ -113,8 +118,9 @@ export default class CommentHighlighter extends Feature implements Disposable {
             const [commentBlock] = blockMatch;
             let lineMatch: RegExpExecArray | null;
             while (lineMatch = lineRegEx.exec(commentBlock)) {
-                const startPos = document.positionAt(blockMatch.index + lineMatch.index + lineMatch[2].length);
-                const endPos = document.positionAt(blockMatch.index + lineMatch.index + lineMatch[0].length);
+                const matchOffset = baseOffset + blockMatch.index + lineMatch.index;
+                const startPos = document.positionAt(matchOffset + lineMatch[2].length);
+                const endPos = document.positionAt(matchOffset + lineMatch[0].length);
                 const matchTag = this.tags.find((t) => t.tag.toLowerCase() === (lineMatch![3] as string).toLowerCase());
                 if (matchTag) {
                     matchTag.ranges.push({range: new Range(startPos, endPos)});
@@ -123,14 +129,15 @@ export default class CommentHighlighter extends Feature implements Disposable {
         }
     }
 
-    private findJSDocComments(editor: TextEditor): void {
+    private findJSDocComments(editor: TextEditor, scanRange: Range): void {
         const lang = this.language!;
         if (!this.highlightMultiline && !lang.highlightJSDoc) {
             return;
         }
 
         const {document} = editor;
-        const text = document.getText();
+        const baseOffset = document.offsetAt(scanRange.start);
+        const text = document.getText(scanRange);
         const jsDocRegEx = /(^|[ \t])(\/\*\*)+([\s\S]*?)(\*\/)/gm;
         const commentMatchStr = `(^)+([ \\t]*\\*[ \\t]*)(${this.escapedTagsPattern})([ ]*|[:])+([^*/][^\\r\\n]*)`;
         const lineRegEx = new RegExp(commentMatchStr, 'igm');
@@ -140,8 +147,9 @@ export default class CommentHighlighter extends Feature implements Disposable {
             const [commentBlock] = blockMatch;
             let lineMatch: RegExpExecArray | null;
             while (lineMatch = lineRegEx.exec(commentBlock)) {
-                const startPos = document.positionAt(blockMatch.index + lineMatch.index + lineMatch[2].length);
-                const endPos = document.positionAt(blockMatch.index + lineMatch.index + lineMatch[0].length);
+                const matchOffset = baseOffset + blockMatch.index + lineMatch.index;
+                const startPos = document.positionAt(matchOffset + lineMatch[2].length);
+                const endPos = document.positionAt(matchOffset + lineMatch[0].length);
                 const matchTag = this.tags.find((t) => t.tag.toLowerCase() === (lineMatch![3] as string).toLowerCase());
                 if (matchTag) {
                     matchTag.ranges.push({range: new Range(startPos, endPos)});

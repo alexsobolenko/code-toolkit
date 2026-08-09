@@ -97,6 +97,10 @@ export class FakeDocument {
         }
     }
 
+    public get lineCount(): number {
+        return this.lineStarts.length;
+    }
+
     public getText(range?: Range): string {
         if (!range) {
             return this.text;

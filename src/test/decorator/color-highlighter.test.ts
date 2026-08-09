@@ -1,6 +1,9 @@
 import {describe, it} from 'node:test';
 import assert from 'node:assert/strict';
-import {FakeDocument, installVscodeMock} from '../helpers/vscode';
+import {FakeDocument, installVscodeMock, Position, Range} from '../helpers/vscode';
+
+/* mirrors the default passed to getConfig() in Feature.getVisibleScanRange */
+const VISIBLE_RANGE_PADDING_LINES = 500;
 
 interface IFakeDecoration {
     style: unknown;
@@ -27,9 +30,16 @@ const restoreVscodeMock = installVscodeMock({
 });
 const {default: ColorHighlighter} = require('../../decorator/color-highlighter');
 
-function makeEditor(text: string): {document: FakeDocument; setDecorations(): void} {
+function makeEditor(
+    text: string,
+    visibleRange?: Range,
+): {document: FakeDocument; visibleRanges: Range[]; setDecorations(): void} {
+    const document = new FakeDocument(text);
+    const fullRange = new Range(new Position(0, 0), document.lineAt(document.lineCount - 1).range.end);
+
     return {
-        document: new FakeDocument(text),
+        document,
+        visibleRanges: [visibleRange ?? fullRange],
         setDecorations: () => undefined,
     };
 }
@@ -62,6 +72,40 @@ describe('ColorHighlighter', () => {
 
         assert.equal(createdDecorations.length, 2);
         assert.equal(createdDecorations.filter((d) => d.disposed).length, 0);
+    });
+
+    it('does not scan colors far outside the padded visible range', () => {
+        createdDecorations.length = 0;
+        const highlighter = new ColorHighlighter();
+
+        const lines = ['color: #ff0000;'];
+        for (let i = 0; i < VISIBLE_RANGE_PADDING_LINES + 50; i++) {
+            lines.push('');
+        }
+        lines.push('color: #00ff00;');
+        const text = lines.join('\n');
+        const visibleRange = new Range(new Position(0, 0), new Position(0, lines[0].length));
+
+        highlighter.update(makeEditor(text, visibleRange));
+
+        assert.equal(createdDecorations.length, 1);
+    });
+
+    it('scans colors within the padded visible range', () => {
+        createdDecorations.length = 0;
+        const highlighter = new ColorHighlighter();
+
+        const lines = ['color: #ff0000;'];
+        for (let i = 0; i < VISIBLE_RANGE_PADDING_LINES - 50; i++) {
+            lines.push('');
+        }
+        lines.push('color: #00ff00;');
+        const text = lines.join('\n');
+        const visibleRange = new Range(new Position(0, 0), new Position(0, lines[0].length));
+
+        highlighter.update(makeEditor(text, visibleRange));
+
+        assert.equal(createdDecorations.length, 2);
     });
 });
 

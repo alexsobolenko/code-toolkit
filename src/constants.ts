@@ -26,6 +26,9 @@ export const COMMAND = {
 } as const;
 
 export const CONFIG = {
+    HIGHLIGHT: {
+        VISIBLE_RANGE_PADDING_LINES: 'highlight.visible-range-padding-lines',
+    },
     TOGGLE_QUOTES: {
         QUOTES_ORDER: 'toggle-quotes.quotes-order',
     },

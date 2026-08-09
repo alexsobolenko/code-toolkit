@@ -170,6 +170,8 @@ Comment Highlights automatically styles marked comments in the active editor. It
 
 Markers are case-insensitive and the whole matching comment line is decorated. JavaScript, TypeScript, React variants, and Apex also highlight matching markers inside JSDoc-style comments. Highlighting inside regular block comments is enabled by default and can be controlled with `advanced-code-toolkit.comment-highlight-multiline`.
 
+Both Comment Highlights and Color Highlights only scan the lines currently visible in the editor, plus a configurable padding above and below, controlled by `advanced-code-toolkit.highlight.visible-range-padding-lines` (default `500`).
+
 The marker list and styles are controlled by `advanced-code-toolkit.comment-tags`:
 
 ```json
