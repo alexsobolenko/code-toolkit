@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.1.0] - 2026-08-09
+
+- Fixed toggle quotes producing invalid syntax when converting strings containing backticks or `${...}` into template literals
+- Fixed a memory leak where color highlight decorations were never released as colors changed in the document
+- Fixed severe performance degradation of toggle multiline expression on large JavaScript/TypeScript files
+- Comment and color highlights now only scan the visible editor area (plus a configurable padding) instead of the whole file, improving performance on large files
+- Added a language filter for color highlights (`color-highlight.languages`)
+
 ## [1.0.0] - 2026-06-30
 
 - Rewrote the extension's internal architecture for better maintainability (no intended functional changes)
