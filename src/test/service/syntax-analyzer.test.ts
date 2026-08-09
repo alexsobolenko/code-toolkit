@@ -110,6 +110,99 @@ describe('SyntaxAnalyzer text scanning', () => {
         assert.equal(analyzer.isOffsetInComment(text, text.indexOf('value'), 'javascript'), false);
     });
 
+    it('treats / as division after an identifier, a number, or a closing bracket', () => {
+        const analyzer = new SyntaxAnalyzer();
+        const skippedTypes: SkippedRangeType[] = [];
+        let scanned = '';
+
+        analyzer.scan('a / b; 5 / 2; foo() / 2;', (character) => {
+            scanned += character;
+        }, {
+            languageId: 'javascript',
+            onSkippedRange: (_startOffset, _endOffset, type) => {
+                skippedTypes.push(type);
+            },
+        });
+
+        assert.deepEqual(skippedTypes, []);
+        assert.equal(scanned, 'a / b; 5 / 2; foo() / 2;');
+    });
+
+    it('treats / as a regex start after a keyword or an operator', () => {
+        const analyzer = new SyntaxAnalyzer();
+        const skippedTypes: SkippedRangeType[] = [];
+
+        analyzer.scan('return /abc/.test(x); const y = /def/;', () => undefined, {
+            languageId: 'javascript',
+            onSkippedRange: (_startOffset, _endOffset, type) => {
+                skippedTypes.push(type);
+            },
+        });
+
+        assert.deepEqual(skippedTypes, ['regex', 'regex']);
+    });
+
+    it('treats / as division after a string literal', () => {
+        const analyzer = new SyntaxAnalyzer();
+        const skippedTypes: SkippedRangeType[] = [];
+
+        analyzer.scan('"str" / 2;', () => undefined, {
+            languageId: 'javascript',
+            onSkippedRange: (_startOffset, _endOffset, type) => {
+                skippedTypes.push(type);
+            },
+        });
+
+        assert.deepEqual(skippedTypes, ['string']);
+    });
+
+    it('treats / as a regex start at the very beginning of the text', () => {
+        const analyzer = new SyntaxAnalyzer();
+        const skippedTypes: SkippedRangeType[] = [];
+
+        analyzer.scan('/abc/.test(x);', () => undefined, {
+            languageId: 'javascript',
+            onSkippedRange: (_startOffset, _endOffset, type) => {
+                skippedTypes.push(type);
+            },
+        });
+
+        assert.deepEqual(skippedTypes, ['regex']);
+    });
+
+    it('strips a leading digit run before matching the trailing identifier against keywords', () => {
+        const analyzer = new SyntaxAnalyzer();
+        const skippedTypes: SkippedRangeType[] = [];
+
+        analyzer.scan('x = 3in /y/.test(z);', () => undefined, {
+            languageId: 'javascript',
+            onSkippedRange: (_startOffset, _endOffset, type) => {
+                skippedTypes.push(type);
+            },
+        });
+
+        assert.deepEqual(skippedTypes, ['regex']);
+    });
+
+    it('scans large javascript-like text with many division operators in linear time', () => {
+        const analyzer = new SyntaxAnalyzer();
+        const lines: string[] = [];
+        for (let i = 0; i < 20000; i++) {
+            lines.push(`a${i} / b${i};`);
+        }
+        const text = lines.join('\n');
+
+        const start = Date.now();
+        let count = 0;
+        analyzer.scan(text, () => {
+            count++;
+        }, {languageId: 'javascript'});
+        const elapsed = Date.now() - start;
+
+        assert.ok(count > 0);
+        assert.ok(elapsed < 2000, `expected scan to finish quickly, took ${elapsed}ms`);
+    });
+
     it('skips PHP heredoc bodies', () => {
         const analyzer = new SyntaxAnalyzer();
         const text = '$value = <<<TEXT\nignored()\nTEXT;\nvisible();';

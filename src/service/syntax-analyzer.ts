@@ -69,8 +69,25 @@ export default class SyntaxAnalyzer {
 
     scan(text: string, callback: TextScanCallback, options: ITextScanOptions = {}): void {
         const languageId = options.languageId ?? '';
+        let lookbackOffset = 0;
+        let lastNonWhitespaceChar: string | undefined;
+        let wordBuffer = '';
+        const catchUpLookback = (upToOffset: number): void => {
+            for (; lookbackOffset < upToOffset; lookbackOffset++) {
+                const lookbackCharacter = text[lookbackOffset];
+                if (/[\w$]/.test(lookbackCharacter)) {
+                    wordBuffer += lookbackCharacter;
+                } else if (!/\s/.test(lookbackCharacter)) {
+                    wordBuffer = '';
+                }
+                if (!/\s/.test(lookbackCharacter)) {
+                    lastNonWhitespaceChar = lookbackCharacter;
+                }
+            }
+        };
 
         for (let offset = 0; offset < text.length; offset++) {
+            catchUpLookback(offset);
             const character = text[offset];
             const nextCharacter = text[offset + 1];
 
@@ -128,7 +145,7 @@ export default class SyntaxAnalyzer {
                 continue;
             }
 
-            if (character === '/' && this.isRegexStart(text, offset, languageId)) {
+            if (character === '/' && this.isRegexStart(languageId, lastNonWhitespaceChar, wordBuffer)) {
                 const endOffset = this.findRegexEndOffset(text, offset);
                 if (endOffset !== undefined) {
                     if (!this.notifySkippedRange(options, offset, endOffset, 'regex')) {
@@ -317,22 +334,20 @@ export default class SyntaxAnalyzer {
         return lineEndOffset;
     }
 
-    private isRegexStart(text: string, offset: number, languageId: string): boolean {
+    private isRegexStart(languageId: string, lastNonWhitespaceChar: string | undefined, wordBuffer: string): boolean {
         if (!this.isJavaScriptLike(languageId)) {
             return false;
         }
 
-        const before = text.substring(0, offset).trimEnd();
-        if (!before) {
+        if (lastNonWhitespaceChar === undefined) {
             return true;
         }
 
-        const previousCharacter = before[before.length - 1];
-        if ('([{=,:;!&|?+-*%^~<>'.includes(previousCharacter)) {
+        if ('([{=,:;!&|?+-*%^~<>'.includes(lastNonWhitespaceChar)) {
             return true;
         }
 
-        const previousToken = before.match(/[A-Za-z_$][\w$]*$/)?.[0];
+        const previousToken = this.extractTrailingIdentifier(wordBuffer);
 
         return previousToken ? [
             'await',
@@ -348,5 +363,14 @@ export default class SyntaxAnalyzer {
             'void',
             'yield',
         ].includes(previousToken) : false;
+    }
+
+    private extractTrailingIdentifier(wordBuffer: string): string | undefined {
+        let start = 0;
+        while (start < wordBuffer.length && /\d/.test(wordBuffer[start])) {
+            start++;
+        }
+
+        return start < wordBuffer.length ? wordBuffer.slice(start) : undefined;
     }
 }
