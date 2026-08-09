@@ -18,6 +18,7 @@ export default class ColorHighlighter extends Feature implements Disposable {
     private enabled = true;
     private mode: ColorHighlightMode = 'background';
     private scanOptions: IColorScanOptions = {hex: true, rgb: true, hsl: true, cssNames: true};
+    private allowedLanguages: string[] = [];
 
     constructor() {
         super();
@@ -25,7 +26,7 @@ export default class ColorHighlighter extends Feature implements Disposable {
     }
 
     update(editor: TextEditor): void {
-        if (!this.enabled) {
+        if (!this.enabled || !this.isLanguageAllowed(editor.document.languageId)) {
             return;
         }
 
@@ -83,6 +84,18 @@ export default class ColorHighlighter extends Feature implements Disposable {
 
         const mode = this.getConfig<string>(CONFIG.COLOR_HIGHLIGHT.MODE, 'background');
         this.mode = (mode === 'background' || mode === 'border' || mode === 'dot') ? mode : 'background';
+
+        this.allowedLanguages = this.getConfig<string[]>(CONFIG.COLOR_HIGHLIGHT.LANGUAGES, [
+            'css', 'scss', 'less', 'sass', 'stylus',
+            'html', 'vue', 'svelte',
+            'javascript', 'javascriptreact', 'typescript', 'typescriptreact',
+            'json', 'jsonc',
+            'markdown', 'xml', 'php',
+        ]);
+    }
+
+    private isLanguageAllowed(languageId: string): boolean {
+        return this.allowedLanguages.includes('*') || this.allowedLanguages.includes(languageId);
     }
 
     private getOrCreateDecoration(color: IParsedColor): IColorDecoration {

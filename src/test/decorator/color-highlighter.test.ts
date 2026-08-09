@@ -12,6 +12,7 @@ interface IFakeDecoration {
 }
 
 const createdDecorations: IFakeDecoration[] = [];
+const configOverrides: Record<string, unknown> = {};
 const restoreVscodeMock = installVscodeMock({
     window: {
         createTextEditorDecorationType: (style: unknown): IFakeDecoration => {
@@ -27,19 +28,24 @@ const restoreVscodeMock = installVscodeMock({
             return decoration;
         },
     },
+    workspace: {
+        getConfiguration: () => ({
+            get: (key: string, defaultValue: unknown) => (key in configOverrides ? configOverrides[key] : defaultValue),
+        }),
+    },
 });
 const {default: ColorHighlighter} = require('../../decorator/color-highlighter');
 
 function makeEditor(
     text: string,
-    visibleRange?: Range,
+    options: {visibleRange?: Range; languageId?: string} = {},
 ): {document: FakeDocument; visibleRanges: Range[]; setDecorations(): void} {
-    const document = new FakeDocument(text);
+    const document = new FakeDocument(text, options.languageId ?? 'css');
     const fullRange = new Range(new Position(0, 0), document.lineAt(document.lineCount - 1).range.end);
 
     return {
         document,
-        visibleRanges: [visibleRange ?? fullRange],
+        visibleRanges: [options.visibleRange ?? fullRange],
         setDecorations: () => undefined,
     };
 }
@@ -86,7 +92,7 @@ describe('ColorHighlighter', () => {
         const text = lines.join('\n');
         const visibleRange = new Range(new Position(0, 0), new Position(0, lines[0].length));
 
-        highlighter.update(makeEditor(text, visibleRange));
+        highlighter.update(makeEditor(text, {visibleRange}));
 
         assert.equal(createdDecorations.length, 1);
     });
@@ -103,9 +109,41 @@ describe('ColorHighlighter', () => {
         const text = lines.join('\n');
         const visibleRange = new Range(new Position(0, 0), new Position(0, lines[0].length));
 
-        highlighter.update(makeEditor(text, visibleRange));
+        highlighter.update(makeEditor(text, {visibleRange}));
 
         assert.equal(createdDecorations.length, 2);
+    });
+
+    it('does not scan a language outside the default allowed list', () => {
+        createdDecorations.length = 0;
+        const highlighter = new ColorHighlighter();
+
+        highlighter.update(makeEditor('color: #ff0000;', {languageId: 'plaintext'}));
+
+        assert.equal(createdDecorations.length, 0);
+    });
+
+    it('scans php by default', () => {
+        createdDecorations.length = 0;
+        const highlighter = new ColorHighlighter();
+
+        highlighter.update(makeEditor('<span style="color: #ff0000;">', {languageId: 'php'}));
+
+        assert.equal(createdDecorations.length, 1);
+    });
+
+    it('scans every language when configured with ["*"]', () => {
+        createdDecorations.length = 0;
+        configOverrides['color-highlight.languages'] = ['*'];
+
+        try {
+            const highlighter = new ColorHighlighter();
+            highlighter.update(makeEditor('color: #ff0000;', {languageId: 'plaintext'}));
+
+            assert.equal(createdDecorations.length, 1);
+        } finally {
+            delete configOverrides['color-highlight.languages'];
+        }
     });
 });
 

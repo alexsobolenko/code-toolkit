@@ -286,6 +286,20 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Highlight CSS color names."
+                },
+                "advanced-code-toolkit.color-highlight.languages": {
+                    "type": "array",
+                    "default": [
+                        "css", "scss", "less", "sass", "stylus",
+                        "html", "vue", "svelte",
+                        "javascript", "javascriptreact", "typescript", "typescriptreact",
+                        "json", "jsonc",
+                        "markdown", "xml", "php"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Language identifiers color highlights are enabled for. Use [\"*\"] to enable for every language."
                 }
             }
         }

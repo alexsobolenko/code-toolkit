@@ -49,6 +49,7 @@ export const CONFIG = {
         RGB: 'color-highlight.rgb',
         HSL: 'color-highlight.hsl',
         CSS_NAMES: 'color-highlight.css-names',
+        LANGUAGES: 'color-highlight.languages',
     },
 } as const;
 

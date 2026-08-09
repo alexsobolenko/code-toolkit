@@ -224,6 +224,8 @@ Available modes:
 - `border`;
 - `dot`.
 
+Color Highlights only runs for the languages listed in `advanced-code-toolkit.color-highlight.languages` (default: `css`, `scss`, `less`, `sass`, `stylus`, `html`, `vue`, `svelte`, `javascript`, `javascriptreact`, `typescript`, `typescriptreact`, `json`, `jsonc`, `markdown`, `xml`, `php`). Set it to `["*"]` to enable it for every language.
+
 Example configuration:
 
 ```json
@@ -233,6 +235,7 @@ Example configuration:
     "advanced-code-toolkit.color-highlight.hex": true,
     "advanced-code-toolkit.color-highlight.rgb": true,
     "advanced-code-toolkit.color-highlight.hsl": true,
-    "advanced-code-toolkit.color-highlight.css-names": true
+    "advanced-code-toolkit.color-highlight.css-names": true,
+    "advanced-code-toolkit.color-highlight.languages": ["css", "scss", "html"]
 }
 ```
