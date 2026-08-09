@@ -89,9 +89,14 @@ export default class QuotesToggler extends Feature {
         for (let i = 0; i < text.length; i++) {
             const character = text[i];
             const nextCharacter = text[i + 1];
-            if (character === '\\' && nextCharacter && this.shouldUnescapeQuote(nextCharacter, currentQuotes)) {
+            if (character === '\\' && nextCharacter === '$' && text[i + 2] === '{' && this.isBacktick(currentQuotes)) {
+                result += '$';
+                i++;
+            } else if (character === '\\' && nextCharacter && this.shouldUnescapeQuote(nextCharacter, currentQuotes)) {
                 result += nextCharacter;
                 i++;
+            } else if (character === '$' && nextCharacter === '{' && this.isBacktick(nextQuotes)) {
+                result += '\\$';
             } else if (this.shouldEscapeQuote(character, nextQuotes)) {
                 result += `\\${character}`;
             } else {
@@ -113,7 +118,11 @@ export default class QuotesToggler extends Feature {
     }
 
     private isEscapableQuote(character: string): boolean {
-        return character === '\'' || character === '"';
+        return character === '\'' || character === '"' || character === '`';
+    }
+
+    private isBacktick(quotes: IQuotes): boolean {
+        return quotes.begin === '`';
     }
 
     private getSelectionQuotes(
