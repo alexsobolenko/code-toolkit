@@ -32,15 +32,23 @@ export default class ColorHighlighter extends Feature implements Disposable {
         const {document} = editor;
         const text = document.getText();
         const matches = this.scanner.scan(text, this.scanOptions);
+        const usedKeys = new Set<string>();
 
         for (const match of matches) {
             const startPos = document.positionAt(match.startOffset);
             const endPos = document.positionAt(match.endOffset);
             const item = this.getOrCreateDecoration(match.color);
+            usedKeys.add(this.getColorKey(match.color));
             item.ranges.push({range: new Range(startPos, endPos)});
         }
 
-        for (const item of this.decorations.values()) {
+        for (const [key, item] of this.decorations) {
+            if (!usedKeys.has(key)) {
+                item.decoration.dispose();
+                this.decorations.delete(key);
+                continue;
+            }
+
             editor.setDecorations(item.decoration, item.ranges);
             item.ranges.length = 0;
         }
@@ -72,7 +80,7 @@ export default class ColorHighlighter extends Feature implements Disposable {
     }
 
     private getOrCreateDecoration(color: IParsedColor): IColorDecoration {
-        const key = `${color.red},${color.green},${color.blue},${this.alphaStr(color.alpha)}`;
+        const key = this.getColorKey(color);
         const existing = this.decorations.get(key);
         if (existing) {
             return existing;
@@ -83,8 +91,12 @@ export default class ColorHighlighter extends Feature implements Disposable {
             ranges: [],
         };
         this.decorations.set(key, item);
-        
+
         return item;
+    }
+
+    private getColorKey(color: IParsedColor): string {
+        return `${color.red},${color.green},${color.blue},${this.alphaStr(color.alpha)}`;
     }
 
     private buildDecorationOptions(color: IParsedColor): DecorationRenderOptions {
